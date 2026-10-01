@@ -1,0 +1,2480 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>ПТИ · НовГУ — Студенческий портал</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#003366">
+<link rel="icon" type="image/svg+xml" href="icon-192.svg">
+<link rel="apple-touch-icon" href="icon-192.svg">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="ПТИ НовГУ">
+<style>
+:root{--primary:#003366;--primary-dark:#002244;--primary-light:#e8f0fe;--accent:#ffd700;--accent-dark:#e6b800;--text-dark:#1a2a3a;--text-medium:#4a5a6a;--text-light:#8896a5;--bg-body:#f5f7fa;--card-bg:#fff;--header-bg:#003366;--success:#2e7d32;--warning:#e65100;--error:#c62828;--info:#1976d2;--space-xs:4px;--space-sm:8px;--space-md:12px;--space-lg:16px;--space-xl:24px;--space-2xl:32px;--fs-xs:.75rem;--fs-sm:.85rem;--fs-base:.95rem;--fs-md:1rem;--fs-lg:1.15rem;--fs-xl:1.4rem;--fs-2xl:2rem;--radius-sm:6px;--radius:10px;--radius-lg:16px;--radius-pill:20px;--shadow-sm:0 2px 6px rgba(0,0,0,.06);--shadow:0 2px 10px rgba(0,0,0,.1);--shadow-md:0 6px 16px rgba(0,51,102,.12);--shadow-lg:0 12px 30px rgba(0,51,102,.15);--ease:cubic-bezier(.34,1.56,.64,1)}
+body.dark-theme{--bg-body:#1a1a2e;--text-dark:#eee;--text-medium:#bbb;--text-light:#888;--card-bg:#2a2a3e;--header-bg:#0d0d1a;--primary-light:#1e3a5f;--shadow-sm:0 2px 6px rgba(0,0,0,.3);--shadow:0 2px 10px rgba(0,0,0,.4);--shadow-md:0 6px 16px rgba(0,0,0,.4);--shadow-lg:0 12px 30px rgba(0,0,0,.5)}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg-body);color:var(--text-dark);line-height:1.5;min-height:100vh;padding-bottom:70px;display:flex;flex-direction:column;overflow-x:hidden}
+*{transition:background-color .35s ease,color .35s ease,border-color .35s ease}
+button,input,select,textarea{font-family:inherit}
+img,svg{max-width:100%}
+
+#preloader{position:fixed;inset:0;background:linear-gradient(135deg,#003366,#001f3f);z-index:99999;display:flex;flex-direction:column;justify-content:center;align-items:center;transition:opacity .6s ease,visibility .6s ease}
+#preloader.hidden{opacity:0;visibility:hidden}
+.preloader-logo{font-size:3rem;font-weight:700;color:#fff;letter-spacing:2px;margin-bottom:30px;animation:logoIn 1s var(--ease)}
+.preloader-logo span{color:var(--accent)}
+.preloader-spinner{width:50px;height:50px;border:4px solid rgba(255,255,255,.2);border-top-color:var(--accent);border-radius:50%;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes logoIn{0%{opacity:0;transform:scale(.5) translateY(20px)}100%{opacity:1;transform:scale(1) translateY(0)}}
+main{flex:1 0 auto}
+.app-header{background:var(--header-bg);color:#fff;padding:var(--space-lg) var(--space-xl);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;box-shadow:0 2px 8px rgba(0,0,0,.2);position:sticky;top:0;z-index:100;gap:var(--space-sm)}
+.app-header.scrolled{padding:var(--space-sm) var(--space-xl);box-shadow:0 4px 20px rgba(0,0,0,.3)}
+.logo{display:flex;align-items:center;gap:var(--space-sm);font-size:var(--fs-xl);font-weight:700}
+.logo-icon{flex-shrink:0;transition:transform .4s var(--ease)}
+.logo:hover .logo-icon{transform:rotate(15deg) scale(1.1)}
+.logo-text em{color:var(--accent);font-style:normal;margin:0 2px}
+.app-header.scrolled .logo{font-size:var(--fs-md)}
+.group-info{font-size:var(--fs-base);background:rgba(255,255,255,.15);padding:6px 14px;border-radius:var(--radius-pill);font-weight:500;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.group-selector{display:flex;gap:var(--space-sm);align-items:center;flex-wrap:wrap}
+.group-selector select{padding:8px 12px;border-radius:var(--radius-sm);border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.1);color:#fff;font-size:var(--fs-sm);cursor:pointer}
+.group-selector select:hover{background:rgba(255,255,255,.25)}
+.theme-toggle,.sound-toggle{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:var(--radius-pill);padding:6px 12px;cursor:pointer;font-size:var(--fs-base);min-height:36px}
+.theme-toggle:hover,.sound-toggle:hover{transform:scale(1.08);background:rgba(255,255,255,.25)}
+.sound-toggle.muted{opacity:.5}
+.voice-btn{background:linear-gradient(135deg,#ffd700,#ff9800);color:#003366;font-weight:700;border:none;border-radius:var(--radius-pill);padding:6px 12px;cursor:pointer;font-size:var(--fs-base);min-height:36px}
+.voice-btn:hover{transform:scale(1.05)}
+.voice-btn:disabled{opacity:.5;cursor:not-allowed}
+.weather-widget{display:flex;align-items:center;gap:6px;font-size:var(--fs-sm);color:rgba(255,255,255,.9);cursor:pointer;padding:4px 10px;border-radius:14px;background:rgba(255,255,255,.08)}
+.weather-widget:hover{background:rgba(255,255,255,.18);transform:translateY(-1px)}
+.weather-widget.loading{animation:pulseSoft 1.5s ease-in-out infinite}
+@keyframes pulseSoft{0%,100%{opacity:.5}50%{opacity:1}}
+
+.desktop-nav{display:flex;background:var(--card-bg);box-shadow:var(--shadow);padding:0 var(--space-xl);overflow-x:auto;white-space:nowrap;scrollbar-width:none}
+.desktop-nav::-webkit-scrollbar{display:none}
+.desktop-nav button{background:none;border:none;padding:14px 20px;font-size:var(--fs-md);font-weight:500;color:var(--text-medium);cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap;transition:all .3s var(--ease)}
+.desktop-nav button:hover{color:var(--primary);background:rgba(0,51,102,.05)}
+.desktop-nav button.active{color:var(--primary);border-bottom-color:var(--primary);font-weight:600}
+.tab-content{max-width:1200px;margin:0 auto;padding:var(--space-xl);display:none;width:100%}
+.tab-content.active{display:block;animation:tabIn .5s var(--ease)}
+@keyframes tabIn{0%{opacity:0;transform:translateY(20px) scale(.98)}100%{opacity:1;transform:translateY(0) scale(1)}}
+.mobile-tabbar{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--card-bg);box-shadow:0 -2px 10px rgba(0,0,0,.1);z-index:200;justify-content:space-around;padding:6px 0}
+.mobile-tabbar button{background:none;border:none;display:flex;flex-direction:column;align-items:center;font-size:.65rem;color:var(--text-medium);cursor:pointer;padding:4px 6px;border-radius:var(--radius-sm);flex:1;min-width:0;white-space:nowrap;position:relative}
+.mobile-tabbar button .tab-icon{font-size:1.5rem;margin-bottom:2px;transition:transform .3s var(--ease)}
+.mobile-tabbar button.active{color:var(--primary);background:var(--primary-light);font-weight:600}
+.mobile-tabbar button.active .tab-icon{transform:scale(1.15)}
+.mobile-tabbar button.active::after{content:'';position:absolute;top:4px;left:50%;transform:translateX(-50%);width:6px;height:6px;border-radius:50%;background:var(--accent);animation:tabDot .4s var(--ease)}
+@keyframes tabDot{0%{transform:translateX(-50%) scale(0)}100%{transform:translateX(-50%) scale(1)}}
+
+.schedule-container{background:var(--card-bg);border-radius:var(--radius);padding:var(--space-lg);box-shadow:var(--shadow);overflow:hidden}
+.schedule-week-nav{display:flex;justify-content:center;align-items:center;margin-bottom:var(--space-lg);gap:var(--space-sm);flex-wrap:wrap}
+.schedule-week-nav > button{padding:8px 12px;font-size:var(--fs-sm);white-space:nowrap}
+.schedule-week-nav > span{display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:center}
+.schedule-week-nav > label{display:flex;align-items:center;gap:6px;font-size:var(--fs-sm);white-space:nowrap}
+.week-range{font-weight:600;color:var(--primary);font-size:var(--fs-lg)}
+.week-type-badge{display:inline-block;padding:4px 12px;border-radius:12px;font-size:var(--fs-sm);font-weight:600;background:var(--primary-light);color:var(--primary)}
+.week-type-badge.lower{background:#fff3e0;color:#e65100}
+.week-type-badge.week-num{background:#e8f5e9;color:#2e7d32}
+.schedule-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:var(--space-md)}
+.day-column{background:var(--card-bg);border-radius:var(--radius-sm);padding:var(--space-sm);border:1px solid #e9edf2;animation:dayIn .5s var(--ease) backwards}
+@keyframes dayIn{0%{opacity:0;transform:translateY(20px) scale(.95)}100%{opacity:1;transform:translateY(0) scale(1)}}
+.day-column.today{border:2px solid var(--accent);background:#fffdf0}
+.day-column.weekend{opacity:.6}
+.day-header{font-weight:600;text-align:center;padding-bottom:6px;border-bottom:1px solid #dee4eb;margin-bottom:var(--space-sm);color:var(--primary);font-size:var(--fs-sm)}
+.lesson-item{background:var(--card-bg);border-radius:var(--radius-sm);padding:var(--space-sm);margin-bottom:6px;border-left:3px solid var(--primary);box-shadow:var(--shadow-sm);cursor:pointer;animation:lessonIn .45s var(--ease) backwards;word-wrap:break-word;position:relative;transition:all .3s var(--ease)}
+@keyframes lessonIn{0%{opacity:0;transform:translateX(-15px)}100%{opacity:1;transform:translateX(0)}}
+.lesson-item:hover{transform:translateY(-3px) scale(1.02);box-shadow:var(--shadow-md);border-left-color:var(--accent)}
+.lesson-item.replacement{background:#fff3e0;border-left-color:#ff9800}
+.lesson-time{font-size:var(--fs-xs);color:var(--primary);font-weight:600}
+.lesson-type{font-size:var(--fs-xs);color:var(--text-light)}
+.lesson-subject{font-weight:600;font-size:var(--fs-sm)}
+.lesson-teacher,.lesson-room{font-size:var(--fs-xs);color:var(--text-medium)}
+.lesson-note{font-size:var(--fs-xs);color:var(--error);margin-top:4px;font-style:italic}
+.schedule-filters{display:flex;gap:var(--space-md);margin-bottom:var(--space-sm);flex-wrap:wrap}
+.schedule-filters input,.schedule-filters select{padding:8px 12px;border:1px solid #ccc;border-radius:var(--radius-sm);font-size:var(--fs-sm);background:var(--card-bg);color:var(--text-dark);min-width:200px}
+.schedule-filters input:focus,.schedule-filters select:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(0,51,102,.1)}
+
+.info-section{background:var(--card-bg);border-radius:var(--radius);padding:var(--space-xl);box-shadow:var(--shadow);margin-bottom:var(--space-xl);animation:cardIn .6s var(--ease) backwards;transition:box-shadow .3s ease}
+@keyframes cardIn{0%{opacity:0;transform:perspective(600px) rotateX(-15deg) translateY(20px)}100%{opacity:1;transform:perspective(600px) rotateX(0) translateY(0)}}
+.info-section:hover{box-shadow:var(--shadow-md)}
+.info-section h3{color:var(--primary);margin-bottom:var(--space-lg);font-size:var(--fs-lg);display:flex;align-items:center;gap:var(--space-sm);word-wrap:break-word}
+
+.links-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:var(--space-md)}
+.link-card{display:flex;align-items:center;gap:var(--space-md);padding:14px 16px;background:#f8fafc;border-radius:var(--radius);border-left:4px solid var(--primary);text-decoration:none;color:var(--text-dark);transition:all .3s var(--ease)}
+.link-card:hover{background:#eef3f9;transform:translateX(6px);box-shadow:var(--shadow-md)}
+.link-icon{font-size:1.6rem;flex-shrink:0}
+.link-title{font-weight:600;font-size:var(--fs-base)}
+.link-desc{font-size:var(--fs-xs);color:var(--text-medium)}
+
+.club-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+.club-card{display:flex;align-items:flex-start;gap:14px;padding:16px;background:#f8fafc;border-radius:var(--radius);border-left:4px solid var(--primary);text-decoration:none;color:var(--text-dark);transition:all .3s var(--ease);animation:slideUp .4s var(--ease) backwards}
+.club-card:hover{background:#eef3f9;transform:translateY(-4px) scale(1.02);box-shadow:var(--shadow-md);border-left-color:var(--accent)}
+.club-card.sport{border-left-color:#ff9800}
+.club-card.volunteer{border-left-color:#4caf50}
+.club-card.creative{border-left-color:#9c27b0}
+.club-icon{font-size:2rem;flex-shrink:0;transition:transform .3s var(--ease)}
+.club-card:hover .club-icon{transform:scale(1.15) rotate(-5deg)}
+.club-info{flex:1;min-width:0}
+.club-name{font-weight:700;font-size:var(--fs-base);line-height:1.3}
+.club-desc{font-size:var(--fs-xs);color:var(--text-medium);margin-top:4px;line-height:1.4}
+.club-tag{display:inline-block;padding:2px 10px;border-radius:12px;font-size:.65rem;font-weight:700;text-transform:uppercase;margin-top:8px;background:var(--primary-light);color:var(--primary)}
+.club-card.sport .club-tag{background:#fff3e0;color:#e65100}
+.club-card.volunteer .club-tag{background:#e8f5e9;color:var(--success)}
+.club-card.creative .club-tag{background:#f3e5f5;color:#7b1fa2}
+
+.qr-container{display:flex;gap:var(--space-xl);align-items:center;flex-wrap:wrap;justify-content:center}
+.qr-img{width:180px;height:180px;border-radius:var(--radius);background:#fff;padding:10px;box-shadow:var(--shadow-md);animation:qrIn .6s var(--ease)}
+@keyframes qrIn{0%{opacity:0;transform:scale(.6) rotate(-10deg)}100%{opacity:1;transform:scale(1) rotate(0)}}
+.qr-info{display:flex;flex-direction:column;align-items:center;gap:6px}
+.qr-url{font-size:var(--fs-lg);font-weight:700;color:var(--primary);letter-spacing:.5px}
+
+.admin-hint{background:#fff8e1;border-left:4px solid var(--accent);padding:12px 16px;border-radius:var(--radius-sm);font-size:var(--fs-sm);color:#7a5c00;margin-bottom:var(--space-lg)}
+.admin-area{display:none;margin-bottom:var(--space-lg)}
+.admin-area.visible{display:block;animation:slideDown .4s var(--ease)}
+@keyframes slideDown{from{opacity:0;transform:translateY(-15px)}to{opacity:1;transform:translateY(0)}}
+.admin-login{display:flex;flex-direction:column;gap:var(--space-sm);margin-bottom:var(--space-md)}
+.admin-login input{padding:10px 14px;border:1px solid #ccc;border-radius:var(--radius-sm);background:var(--card-bg);color:var(--text-dark)}
+.admin-login input:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(0,51,102,.1)}
+.admin-login button{background:var(--primary);color:#fff;border:none;padding:10px 20px;border-radius:var(--radius-sm);font-weight:600;cursor:pointer;align-self:flex-start;min-height:44px;transition:all .3s var(--ease)}
+.admin-login button:hover{background:var(--primary-dark);transform:translateY(-2px)}
+.admin-toggle-link{display:inline-block;font-size:var(--fs-xs);color:var(--text-medium);cursor:pointer;text-decoration:underline;margin-top:var(--space-sm)}
+.admin-toggle-link:hover{color:var(--primary)}
+
+.notice-input-area{display:flex;gap:var(--space-md);margin-bottom:var(--space-lg);align-items:center;flex-wrap:wrap}
+.notice-input-area input{flex:1;min-width:200px;padding:12px 16px;border:1px solid #ccc;border-radius:var(--radius-sm);background:var(--card-bg);color:var(--text-dark);font-size:var(--fs-base)}
+.notice-input-area input:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(0,51,102,.1)}
+.notice-list{display:flex;flex-direction:column;gap:var(--space-md)}
+.notice-card{background:#f2f4f8;border-radius:var(--radius-sm);padding:14px;display:flex;justify-content:space-between;align-items:flex-start;border-left:4px solid var(--primary);animation:lessonIn .4s var(--ease) backwards}
+.notice-text{flex:1;margin-right:var(--space-md);word-break:break-word}
+.notice-text img{max-width:100%;max-height:400px;border-radius:var(--radius-sm);margin-bottom:var(--space-sm);object-fit:contain;background:#f0f0f0;display:block}
+.notice-date{font-size:var(--fs-xs);color:var(--text-light);margin-top:4px}
+.notice-delete{background:none;border:none;cursor:pointer;font-size:1.2rem;color:var(--error);padding:4px;transition:transform .3s var(--ease)}
+.notice-delete:hover{transform:scale(1.3) rotate(90deg)}
+.notice-status{text-align:center;padding:var(--space-xl);color:var(--text-medium);font-style:italic}
+.notice-error{background:#ffebee;color:var(--error);padding:12px;border-radius:var(--radius-sm);text-align:center}
+
+.feedback-item{background:#f8fafc;border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:var(--space-sm);border-left:3px solid var(--accent);animation:slideUp .3s var(--ease) backwards}
+.feedback-text{font-size:var(--fs-sm);word-break:break-word;margin-bottom:4px}
+.feedback-meta{font-size:var(--fs-xs);color:var(--text-medium);display:flex;justify-content:space-between;gap:var(--space-sm)}
+.feedback-page-tag{background:var(--primary-light);color:var(--primary);padding:2px 8px;border-radius:10px;font-weight:600}
+
+.quiz-container{background:var(--card-bg);border-radius:var(--radius);padding:var(--space-xl);box-shadow:var(--shadow);max-width:700px;margin:0 auto}
+.question-block{margin-bottom:var(--space-xl);animation:lessonIn .5s var(--ease) backwards}
+.question-text{font-weight:600;margin-bottom:var(--space-md)}
+.answer-option{display:block;margin-bottom:var(--space-sm);padding:10px 14px;background:#f8f9fb;border-radius:var(--radius-sm);cursor:pointer;transition:all .3s var(--ease)}
+.answer-option:hover{background:#e8edf2;transform:translateX(6px)}
+.answer-option input[type="radio"]{margin-right:var(--space-md)}
+.quiz-button{background:var(--primary);color:#fff;border:none;padding:12px 24px;border-radius:var(--radius-sm);font-size:var(--fs-md);font-weight:600;cursor:pointer;min-height:44px;display:inline-flex;align-items:center;justify-content:center;transition:all .3s var(--ease)}
+.quiz-button:hover:not(:disabled){background:var(--primary-dark);transform:translateY(-3px);box-shadow:0 8px 20px rgba(0,51,102,.35)}
+.quiz-button:disabled{cursor:not-allowed;opacity:.6}
+.result-card{background:var(--primary-light);border-radius:var(--radius);padding:var(--space-xl);margin-top:var(--space-xl)}
+.save-result-form input{display:block;width:100%;padding:10px;margin-bottom:var(--space-md);border:1px solid #ccc;border-radius:var(--radius-sm)}
+.history-list li{background:#fff;padding:8px 12px;border-radius:var(--radius-sm);margin-bottom:4px;font-size:var(--fs-sm);border-left:3px solid var(--accent);list-style:none}
+
+.app-footer{flex-shrink:0;background:var(--header-bg);color:#fff;text-align:center;padding:var(--space-md) var(--space-xl);font-size:var(--fs-sm);margin-top:var(--space-xl);word-wrap:break-word}
+.app-footer a{color:var(--accent);text-decoration:none}
+
+.modal-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.5);z-index:500;justify-content:center;align-items:center;backdrop-filter:blur(4px);animation:modalFadeIn .3s ease;padding:var(--space-lg)}
+.modal-overlay.active{display:flex}
+@keyframes modalFadeIn{from{opacity:0}to{opacity:1}}
+@keyframes modalPop{0%{opacity:0;transform:scale(.85) translateY(30px)}70%{transform:scale(1.02) translateY(-4px)}100%{opacity:1;transform:scale(1) translateY(0)}}
+.modal-content{background:var(--card-bg);border-radius:var(--radius);padding:var(--space-xl);max-width:400px;width:100%;max-height:88vh;overflow-y:auto;animation:modalPop .5s var(--ease)}
+.modal-content input[type="text"]{width:100%;padding:8px 10px;margin-bottom:var(--space-md);border:1px solid #ccc;border-radius:var(--radius-sm);background:var(--card-bg);color:var(--text-dark)}
+.modal-content input[type="text"]:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(0,51,102,.1)}
+.modal-content label{display:block;margin-bottom:4px;font-size:var(--fs-sm)}
+
+.notification{position:fixed;bottom:100px;right:20px;background:var(--primary);color:#fff;padding:12px 20px;border-radius:var(--radius-sm);box-shadow:var(--shadow-lg);z-index:300;opacity:0;transition:opacity .5s ease,transform .5s var(--ease);pointer-events:none;transform:translateX(100px);max-width:calc(100% - 40px);font-size:var(--fs-sm)}
+.notification.show{opacity:1;transform:translateX(0)}
+
+.chat-container{display:flex;flex-direction:column;height:450px;background:#f8fafc;border-radius:var(--radius);overflow:hidden;border:1px solid #e0e7f0}
+.chat-messages{flex:1;overflow-y:auto;padding:var(--space-lg);display:flex;flex-direction:column;gap:var(--space-md)}
+.chat-message{max-width:80%;padding:10px 14px;border-radius:12px;font-size:var(--fs-sm);line-height:1.4;white-space:pre-wrap;word-wrap:break-word;animation:msgIn .4s var(--ease)}
+.chat-message.user{align-self:flex-end;background:var(--primary);color:#fff;border-bottom-right-radius:4px}
+.chat-message.bot{align-self:flex-start;background:#fff;border:1px solid #e0e7f0;border-bottom-left-radius:4px}
+@keyframes msgIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.chat-input-area{display:flex;gap:var(--space-sm);padding:var(--space-md);background:#fff;border-top:1px solid #e0e7f0}
+.chat-input-area input{flex:1;padding:10px 14px;border:1px solid #ccc;border-radius:var(--radius-pill);font-size:var(--fs-base);background:var(--card-bg);color:var(--text-dark);min-width:0}
+.chat-input-area input:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(0,51,102,.1)}
+
+.voice-overlay{display:none;position:fixed;inset:0;background:rgba(0,51,102,.97);z-index:9999;justify-content:center;align-items:center;flex-direction:column;color:#fff;text-align:center;padding:var(--space-xl)}
+.voice-overlay.active{display:flex}
+.voice-pulse{width:140px;height:140px;border-radius:50%;background:linear-gradient(135deg,#ffd700,#ff9800);display:flex;align-items:center;justify-content:center;font-size:3rem;margin-bottom:var(--space-2xl);animation:voicePulse 1.5s ease-in-out infinite;cursor:pointer;color:#003366}
+@keyframes voicePulse{0%,100%{transform:scale(1);box-shadow:0 0 0 0 rgba(255,215,0,.7)}50%{transform:scale(1.1);box-shadow:0 0 0 30px rgba(255,215,0,0)}}
+.voice-transcript{font-size:var(--fs-xl);max-width:600px;margin-bottom:var(--space-lg);min-height:60px;font-weight:600}
+.voice-hint{font-size:var(--fs-sm);opacity:.7;margin-bottom:var(--space-lg)}
+.voice-answer{font-size:var(--fs-base);max-width:700px;background:rgba(255,255,255,.12);padding:var(--space-lg) var(--space-xl);border-radius:12px;white-space:pre-wrap}
+.voice-close{position:absolute;top:20px;right:24px;background:none;border:none;color:#fff;font-size:2rem;cursor:pointer}
+
+.weather-modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:600;justify-content:center;align-items:center;backdrop-filter:blur(4px);padding:var(--space-lg)}
+.weather-modal-overlay.active{display:flex}
+.weather-modal{background:var(--card-bg);border-radius:var(--radius-lg);padding:var(--space-xl);max-width:440px;width:100%;animation:modalPop .5s var(--ease);max-height:88vh;overflow-y:auto;position:relative}
+.weather-modal h3{color:var(--primary);margin-bottom:var(--space-lg);font-size:var(--fs-lg)}
+.weather-modal-close{position:absolute;top:10px;right:14px;background:none;border:none;font-size:1.6rem;cursor:pointer;color:var(--text-medium);line-height:1}
+.weather-model-row{display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:14px;padding:12px 14px;background:#f8fafc;border-radius:var(--radius-sm);margin-bottom:var(--space-sm)}
+.weather-model-name{font-weight:600;font-size:var(--fs-sm);color:var(--primary)}
+.weather-model-temp{font-size:var(--fs-lg);font-weight:700;font-variant-numeric:tabular-nums;min-width:50px;text-align:right}
+.weather-model-icon{font-size:1.5rem;text-align:right;min-width:32px}
+.weather-avg-row{display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:14px;padding:14px;background:linear-gradient(135deg,#e3f2fd,#e8f5e9);border-radius:var(--radius);margin-top:var(--space-md);font-weight:600;border:2px solid var(--primary)}
+.weather-avg-row > div:first-child{font-size:var(--fs-sm);color:var(--primary);text-transform:uppercase}
+.weather-agreement{text-align:center;padding:12px;margin-top:var(--space-md);border-radius:var(--radius);font-size:var(--fs-base);font-weight:600}
+.weather-agreement.high{background:#e8f5e9;color:var(--success)}
+.weather-agreement.medium{background:#fff8e1;color:var(--warning)}
+.weather-agreement.low{background:#ffebee;color:var(--error)}
+.weather-source{font-size:var(--fs-xs);color:var(--text-medium);margin-top:var(--space-sm);text-align:center}
+
+.bday-add-toggle{display:block;width:100%;margin-top:var(--space-lg);padding:10px 16px;background:var(--primary-light);color:var(--primary);border:2px dashed var(--primary);border-radius:var(--radius);font-size:var(--fs-base);font-weight:600;cursor:pointer;min-height:44px;transition:all .3s var(--ease)}
+.bday-add-toggle:hover{background:#d4e4fa;transform:translateY(-2px)}
+.bday-add-toggle.active{background:var(--primary);color:#fff;border-style:solid}
+.bday-form{display:none;margin-top:var(--space-md);padding:var(--space-lg);background:#f8fafc;border-radius:var(--radius);animation:slideDown .4s var(--ease)}
+.bday-form.visible{display:block}
+.bday-form input,.bday-form select{width:100%;padding:10px 14px;border:1px solid #ccc;border-radius:var(--radius-sm);background:var(--card-bg);color:var(--text-dark);font-size:var(--fs-base);margin-bottom:var(--space-md)}
+.bday-form input:focus,.bday-form select:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(0,51,102,.1)}
+.bday-date-row{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-md)}
+.bday-delete-btn{width:100%;margin-top:var(--space-sm);padding:10px;background:#ffebee;color:var(--error);border:1px solid #ffcdd2;border-radius:var(--radius-sm);font-size:var(--fs-sm);font-weight:600;cursor:pointer;min-height:44px}
+.bday-delete-btn:hover{background:#ffcdd2}
+.bday-hint{margin-top:var(--space-md);font-size:var(--fs-xs);color:var(--text-medium);text-align:center;line-height:1.4}
+.birthday-item{display:flex;align-items:center;gap:var(--space-md);padding:10px 14px;background:#fafbfd;border-radius:var(--radius-sm);margin-bottom:6px;border-left:3px solid var(--accent);animation:slideUp .4s var(--ease) backwards}
+.birthday-item:hover{background:#fff8e1;transform:translateX(4px)}
+.birthday-item.today{background:linear-gradient(135deg,#ffd700,#ff9800);border-left-color:#fff}
+.birthday-item.mine{box-shadow:0 0 0 2px var(--primary)}
+.bday-icon{font-size:1.4rem;flex-shrink:0}
+.bday-info{flex:1;min-width:0}
+.bday-name{font-weight:600;font-size:var(--fs-base);word-wrap:break-word}
+.bday-date{font-size:var(--fs-xs);color:var(--text-medium);margin-top:2px}
+.bday-days{font-size:var(--fs-xs);color:var(--warning);font-weight:600;white-space:nowrap}
+.bday-you-badge{display:inline-block;padding:1px 8px;background:var(--primary);color:#fff;border-radius:10px;font-size:.65rem;font-weight:700;margin-left:6px}
+
+.ach-progress{background:#f8fafc;border-radius:var(--radius);padding:14px 16px;margin-bottom:var(--space-lg);border:1px solid #e0e7f0}
+.ach-progress-header{display:flex;justify-content:space-between;align-items:center;font-size:var(--fs-sm);margin-bottom:var(--space-sm)}
+.ach-progress-header strong{color:var(--primary);font-size:var(--fs-md)}
+.ach-percent{font-weight:700;color:var(--primary);font-size:var(--fs-lg)}
+.ach-progress-bar{background:#e0e0e0;height:10px;border-radius:5px;overflow:hidden;margin-bottom:var(--space-md)}
+.ach-progress-fill{background:linear-gradient(90deg,var(--primary),var(--accent));height:100%;width:0;transition:width 1.2s var(--ease);border-radius:5px}
+.ach-rarity-stats{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+.ach-stat{padding:4px 10px;border-radius:12px;font-size:var(--fs-xs);font-weight:600;background:#fff;border:1px solid #e0e7f0}
+.ach-stat.common{color:#666}
+.ach-stat.rare{color:var(--info);border-color:#bbdefb}
+.ach-stat.epic{color:#7b1fa2;border-color:#e1bee7}
+.ach-stat.legendary{color:#c79100;border-color:var(--accent);background:#fffbf0}
+.ach-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:var(--space-md)}
+.ach-item{display:flex;align-items:flex-start;gap:var(--space-md);padding:12px;border-radius:var(--radius);border-left:4px solid #ccc;background:#fafbfd;position:relative;overflow:hidden;animation:achIn .5s var(--ease) backwards}
+@keyframes achIn{0%{opacity:0;transform:scale(.85) translateY(15px)}100%{opacity:1;transform:scale(1) translateY(0)}}
+.ach-item.rarity-common{border-left-color:#9e9e9e}
+.ach-item.rarity-common.unlocked{background:linear-gradient(135deg,#f5f5f5,#eceff1)}
+.ach-item.rarity-rare{border-left-color:var(--info)}
+.ach-item.rarity-rare.unlocked{background:linear-gradient(135deg,#e3f2fd,#bbdefb)}
+.ach-item.rarity-epic{border-left-color:#9c27b0}
+.ach-item.rarity-epic.unlocked{background:linear-gradient(135deg,#f3e5f5,#e1bee7)}
+.ach-item.rarity-legendary{border-left-color:var(--accent);background:linear-gradient(135deg,#fffbf0,#fff3c4)}
+.ach-item.rarity-legendary.unlocked{box-shadow:0 0 0 2px var(--accent)}
+.ach-item.locked{opacity:.45;filter:grayscale(.5)}
+.ach-icon-wrap{width:42px;height:42px;border-radius:var(--radius);background:#fff;display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0;box-shadow:var(--shadow-sm)}
+.ach-content{flex:1;min-width:0}
+.ach-rarity{font-size:.65rem;font-weight:700;text-transform:uppercase;color:#999;margin-bottom:2px}
+.ach-item.rarity-rare .ach-rarity{color:var(--info)}
+.ach-item.rarity-epic .ach-rarity{color:#7b1fa2}
+.ach-item.rarity-legendary .ach-rarity{color:#c79100}
+.ach-title{font-weight:600;font-size:var(--fs-base);line-height:1.2}
+.ach-desc{font-size:var(--fs-xs);color:#666;margin-top:2px;line-height:1.3}
+
+@keyframes slideInToast{0%{opacity:0;transform:translateX(120px) scale(.7)}60%{opacity:1;transform:translateX(-6px) scale(1.03)}100%{opacity:1;transform:translateX(0) scale(1)}}
+@keyframes slideOutToast{to{opacity:0;transform:translateX(120px) scale(.8)}}
+.ach-toast{position:fixed;top:80px;right:20px;padding:14px 20px;border-radius:12px;z-index:10000;font-weight:700;animation:slideInToast .6s var(--ease);border:2px solid #fff;max-width:320px}
+.ach-toast.rarity-common{background:linear-gradient(135deg,#9e9e9e,#616161);color:#fff}
+.ach-toast.rarity-rare{background:linear-gradient(135deg,#2196f3,#1976d2);color:#fff}
+.ach-toast.rarity-epic{background:linear-gradient(135deg,#9c27b0,#6a1b9a);color:#fff}
+.ach-toast.rarity-legendary{background:linear-gradient(135deg,#ffd700,#ff9800,#ffd700);background-size:200% 200%;color:#003366;animation:slideInToast .6s var(--ease),legendaryToastGlow 2s ease-in-out infinite}
+@keyframes legendaryToastGlow{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+
+.confetti{position:fixed;top:-20px;z-index:9999;pointer-events:none;animation:confettiFall linear forwards}
+@keyframes confettiFall{0%{transform:translateY(0) rotate(0);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
+
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:var(--space-md);margin-bottom:var(--space-xl)}
+.stat-card{padding:var(--space-lg);border-radius:var(--radius);text-align:center;animation:statIn .6s var(--ease) backwards}
+@keyframes statIn{0%{opacity:0;transform:translateY(20px) scale(.9)}100%{opacity:1;transform:translateY(0) scale(1)}}
+.stat-num{font-size:var(--fs-2xl);font-weight:bold}
+.stat-label{font-size:var(--fs-sm);color:var(--text-medium);margin-top:4px}
+.progress-bar{background:#e0e0e0;height:8px;border-radius:4px;overflow:hidden;margin-top:4px}
+.progress-fill{background:var(--primary);height:100%;width:0;transition:width 1.2s var(--ease)}
+
+.rating-list{display:flex;flex-direction:column;gap:6px}
+.rating-item{display:flex;align-items:center;gap:var(--space-md);padding:10px 14px;background:#fafbfd;border-radius:var(--radius-sm);border-left:3px solid #ccc;animation:slideUp .4s var(--ease) backwards}
+.rating-item.top-1{background:linear-gradient(135deg,#fffbf0,#fff3c4);border-left-color:var(--accent)}
+.rating-item.top-2{background:linear-gradient(135deg,#f5f5f5,#eceff1);border-left-color:#b0bec5}
+.rating-item.top-3{background:linear-gradient(135deg,#fff5e6,#ffe0b2);border-left-color:#cd7f32}
+.rating-item.you{box-shadow:0 0 0 2px var(--primary)}
+.rating-place{font-size:1.3rem;width:32px;text-align:center;font-weight:700;color:var(--text-medium)}
+.rating-nick{flex:1;font-size:var(--fs-base);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rating-score{font-weight:700;color:var(--primary);font-variant-numeric:tabular-nums;font-size:var(--fs-base)}
+.rating-you{margin-top:var(--space-md);padding:10px 14px;background:#fff8e1;border-radius:var(--radius-sm);font-size:var(--fs-sm);display:flex;justify-content:space-between;align-items:center;border-left:3px solid var(--accent);gap:var(--space-sm);flex-wrap:wrap}
+.rating-nick-btn{background:none;border:1px dashed var(--primary);color:var(--primary);padding:4px 10px;border-radius:12px;font-size:var(--fs-xs);cursor:pointer;min-height:32px}
+.rating-nick-btn:hover{background:var(--primary);color:#fff}
+
+.notif-status{display:flex;align-items:center;gap:var(--space-md);padding:14px 16px;border-radius:var(--radius);background:#f8fafc;margin-bottom:var(--space-md);border-left:4px solid var(--primary)}
+.notif-status-icon{font-size:1.8rem;flex-shrink:0}
+.notif-status-text{flex:1;min-width:0}
+.notif-status-title{font-weight:600;font-size:var(--fs-base)}
+.notif-status-desc{font-size:var(--fs-xs);color:var(--text-medium);margin-top:2px}
+.notif-toggle{background:var(--primary);color:#fff;border:none;padding:10px 18px;border-radius:var(--radius-pill);font-weight:600;cursor:pointer;min-height:44px;white-space:nowrap}
+.notif-toggle:hover{background:var(--primary-dark)}
+.notif-toggle.active{background:var(--success)}
+.notif-toggle:disabled{background:#ccc;cursor:not-allowed}
+.notif-hint{font-size:var(--fs-xs);color:var(--text-medium);margin-top:var(--space-sm);padding:8px 12px;background:#fff8e1;border-radius:var(--radius-sm);border-left:3px solid var(--accent)}
+.notif-list{margin-top:var(--space-lg)}
+.notif-list h4{font-size:var(--fs-sm);color:var(--text-medium);margin-bottom:var(--space-sm);text-transform:uppercase}
+.notif-upcoming{display:flex;align-items:center;gap:var(--space-md);padding:10px 14px;background:#fff;border-radius:var(--radius-sm);margin-bottom:6px;border-left:3px solid var(--primary)}
+.notif-time{font-weight:700;color:var(--primary);font-size:var(--fs-base);font-variant-numeric:tabular-nums;min-width:60px}
+.notif-info{flex:1;min-width:0}
+.notif-subject{font-weight:600;font-size:var(--fs-base)}
+.notif-room{font-size:var(--fs-xs);color:var(--text-medium)}
+
+.map-container{background:var(--card-bg);border-radius:var(--radius);padding:var(--space-xl);box-shadow:var(--shadow)}
+#yandexMap{width:100%;height:500px;border-radius:var(--radius);background:#eef2f7;display:flex;align-items:center;justify-content:center;color:#666}
+
+.offline-banner{position:fixed;top:0;left:0;right:0;background:var(--error);color:#fff;padding:8px 16px;display:none;align-items:center;justify-content:center;gap:10px;font-size:var(--fs-sm);font-weight:600;z-index:9999}
+.offline-banner.visible{display:flex}
+.offline-dot{width:10px;height:10px;border-radius:50%;background:#fff;animation:pulseSoft 1.5s ease-in-out infinite}
+
+.text-muted{color:var(--text-medium)}
+.text-xs{font-size:var(--fs-xs)}
+.flex{display:flex}
+.flex-between{display:flex;align-items:center;justify-content:space-between}
+.gap-sm{gap:var(--space-sm)}
+.gap-md{gap:var(--space-md)}
+
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--primary);border-radius:4px}
+::-webkit-scrollbar-thumb:hover{background:var(--accent)}
+
+@media (max-width:768px){
+  .desktop-nav{display:none}
+  .mobile-tabbar{display:flex}
+  .schedule-grid{grid-template-columns:1fr}
+  .app-header{padding:10px 12px;gap:6px}
+  .logo{font-size:var(--fs-lg)}
+  .app-header.scrolled .logo{font-size:var(--fs-md)}
+  .group-selector{width:100%;margin-top:4px;justify-content:space-between;gap:6px}
+  .group-selector select{flex:1;min-width:0;padding:8px 10px;font-size:var(--fs-sm)}
+  .group-selector label{display:none}
+  .schedule-filters{flex-direction:column}
+  .schedule-filters input,.schedule-filters select{width:100%}
+  .links-grid{grid-template-columns:1fr}
+  .club-grid{grid-template-columns:1fr}
+  .chat-container{height:360px}
+  .stat-grid{grid-template-columns:1fr 1fr;gap:var(--space-sm)}
+  .stat-num{font-size:1.5rem}
+  .ach-grid{grid-template-columns:1fr}
+  .modal-content{padding:var(--space-lg)}
+  .voice-pulse{width:110px;height:110px;font-size:2.2rem}
+  .voice-transcript{font-size:var(--fs-md)}
+  .notice-input-area{flex-direction:column;align-items:stretch}
+  .notice-input-area input{min-width:0}
+  .notice-input-area button{width:100%}
+  .admin-login button{width:100%;align-self:stretch}
+  .weather-widget{font-size:var(--fs-xs);padding:3px 8px}
+  .rating-nick{font-size:var(--fs-sm)}
+  .rating-place{font-size:1.1rem;width:26px}
+  .notif-status{flex-direction:column;align-items:stretch;gap:var(--space-sm)}
+  .notif-toggle{width:100%}
+  .schedule-week-nav > button{padding:6px 10px;font-size:var(--fs-xs)}
+  .schedule-week-nav > span{flex-direction:column;gap:4px;width:100%}
+}
+@media (max-width:380px){
+  .logo{font-size:var(--fs-md)}
+  .logo-icon{width:26px;height:26px}
+  .weather-widget{display:none}
+  .sound-toggle{display:none}
+  .group-selector select{font-size:var(--fs-xs)}
+  .voice-btn{font-size:var(--fs-xs);padding:6px 8px}
+  .mobile-tabbar button .tab-icon{font-size:1.3rem}
+  .mobile-tabbar button{font-size:.6rem}
+  .stat-grid{grid-template-columns:1fr}
+  .ach-toast{top:70px;right:10px;left:10px;max-width:none}
+  .weather-model-name{font-size:var(--fs-xs)}
+  .weather-model-temp{font-size:var(--fs-md)}
+}
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:.01ms !important;transition-duration:.01ms !important}
+}
+</style>
+</head>
+<body>
+<div id="preloader">
+  <div class="preloader-logo">ПТИ <span>·</span> НовГУ</div>
+  <div class="preloader-spinner"></div>
+</div>
+
+<header class="app-header" id="appHeader">
+  <div class="logo">
+    <svg class="logo-icon" viewBox="0 0 40 40" width="32" height="32" aria-hidden="true">
+      <circle cx="20" cy="20" r="19" fill="none" stroke="#ffd700" stroke-width="1.5"/>
+      <path d="M 20 6 L 32 14 L 32 26 L 20 34 L 8 26 L 8 14 Z" fill="none" stroke="#fff" stroke-width="1.5"/>
+      <circle cx="20" cy="20" r="5" fill="#ffd700"/>
+      <text x="20" y="24" text-anchor="middle" font-size="8" font-weight="700" fill="#003366" font-family="Segoe UI, sans-serif">ПТИ</text>
+    </svg>
+    <span class="logo-text">ПТИ <em>·</em> НовГУ</span>
+  </div>
+  <div class="weather-widget" id="weatherWidget" title="Клик — ансамблевый прогноз">
+    <span id="weatherIcon">·</span><span id="weatherTemp">--°</span>
+  </div>
+  <div class="group-selector">
+    <label for="courseSelect" style="color:white;">Курс:</label>
+    <select id="courseSelect"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select>
+    <label for="groupSelect" style="color:white;">Группа:</label>
+    <select id="groupSelect"></select>
+    <button class="voice-btn" id="voiceBtn" title="Голосовой ассистент">🎤 Спросить</button>
+    <button class="sound-toggle" id="soundToggle" title="Звук достижений">🔊</button>
+    <button class="theme-toggle" id="themeToggle">🌓</button>
+  </div>
+</header>
+
+<nav class="desktop-nav" id="desktopNav">
+  <button class="tab-link active" data-tab="now">⚡ Сейчас</button>
+  <button class="tab-link" data-tab="schedule">📅 Расписание</button>
+  <button class="tab-link" data-tab="map">🗺️ Карта</button>
+  <button class="tab-link" data-tab="info">ℹ️ Инфо</button>
+  <button class="tab-link" data-tab="digital">🧠 Цифра</button>
+</nav>
+
+<main>
+<section id="tab-now" class="tab-content active">
+  <h2 style="margin-bottom:var(--space-xl);">⚡ Сейчас</h2>
+  <div id="nowContent" class="info-section"></div>
+  <div class="info-section"><h3>📊 Статистика семестра</h3><div id="statsContent"></div></div>
+  <div class="info-section"><h3>🎂 Дни рождения</h3><div id="birthdaysContent">Загрузка...</div>
+    <button class="bday-add-toggle" id="bdayAddToggle">+ Добавить свой день рождения</button>
+    <div class="bday-form" id="bdayForm">
+      <input type="text" id="bdayName" placeholder="Имя или Ник" maxlength="30">
+      <div class="bday-date-row">
+        <select id="bdayDay"><option value="">День</option></select>
+        <select id="bdayMonth">
+          <option value="">Месяц</option>
+          <option value="1">Январь</option><option value="2">Февраль</option><option value="3">Март</option>
+          <option value="4">Апрель</option><option value="5">Май</option><option value="6">Июнь</option>
+          <option value="7">Июль</option><option value="8">Август</option><option value="9">Сентябрь</option>
+          <option value="10">Октябрь</option><option value="11">Ноябрь</option><option value="12">Декабрь</option>
+        </select>
+      </div>
+      <button class="quiz-button" id="bdaySaveBtn" style="width:100%;">Сохранить</button>
+      <button class="bday-delete-btn" id="bdayDeleteBtn" style="display:none;">🗑 Удалить мой день рождения</button>
+      <div class="bday-hint">💡 День рождения сохранится для всех студентов портала</div>
+    </div>
+  </div>
+  <div class="info-section"><h3>🏆 Ваши достижения</h3><div id="achievementsContent"></div></div>
+  <div class="info-section"><h3>🥇 Рейтинг группы</h3><div id="ratingContent">Загрузка...</div></div>
+  <div class="info-section"><h3>🔔 Уведомления</h3><div id="notifContent"></div></div>
+</section>
+
+<section id="tab-schedule" class="tab-content">
+  <h2 style="margin-bottom:var(--space-xl);">Расписание занятий</h2>
+  <div class="schedule-container">
+    <div class="schedule-week-nav">
+      <button id="prevWeekBtn" class="quiz-button">← Пред.</button>
+      <span><span class="week-range" id="weekRange"></span><span class="week-type-badge" id="weekTypeBadge">Верхняя</span><span class="week-type-badge week-num" id="weekNumBadge"></span></span>
+      <button id="nextWeekBtn" class="quiz-button">След. →</button>
+      <button id="todayBtn" class="quiz-button">Сегодня</button>
+      <label><input type="checkbox" id="hideWeekendsCheckbox"> Скрыть выходные</label>
+      <button id="exportPngBtn" class="quiz-button">PNG</button>
+      <button id="exportIcalBtn" class="quiz-button">iCal</button>
+    </div>
+    <div class="schedule-filters">
+      <input type="text" id="searchInput" placeholder="Поиск по предмету, преподавателю, аудитории">
+      <select id="teacherFilter"><option value="">Все преподаватели</option></select>
+    </div>
+    <div id="scheduleGrid" class="schedule-grid"></div>
+  </div>
+</section>
+
+<section id="tab-map" class="tab-content">
+  <h2 style="margin-bottom:var(--space-xl);">Карта корпусов НовГУ</h2>
+  <div class="map-container">
+    <div id="yandexMap">Загрузка карты...</div>
+  </div>
+  <div class="info-section" style="margin-top:var(--space-xl);">
+    <h3>🚧 Внутрикорпусной навигатор</h3>
+    <p class="text-muted" style="font-style:italic;">Раздел в разработке. Скоро здесь появится возможность строить маршрут между аудиториями.</p>
+  </div>
+</section>
+
+<section id="tab-info" class="tab-content">
+  <h2 style="margin-bottom:var(--space-xl);">ℹ️ Полезная информация</h2>
+  <div class="info-section">
+    <h3>🤖 ИИ-помощник по расписанию</h3>
+    <div class="chat-container">
+      <div class="chat-messages" id="chatMessages">
+        <div class="chat-message bot">Привет! 👋 Я помогу с расписанием. Спроси: «Что завтра?», «Когда физика?»</div>
+      </div>
+      <div class="chat-input-area">
+        <input type="text" id="chatInput" placeholder="Спросите что-нибудь..." maxlength="500">
+        <button id="sendChatBtn" class="quiz-button">→</button>
+      </div>
+    </div>
+  </div>
+  <div class="info-section">
+    <h3>📌 Полезные ссылки</h3>
+    <div class="links-grid">
+      <a class="link-card" href="https://portal.novsu.ru" target="_blank" rel="noopener"><span class="link-icon">🎓</span><div><div class="link-title">Портал НовГУ</div><div class="link-desc">Личный кабинет</div></div></a>
+      <a class="link-card" href="https://portal.novsu.ru/study" target="_blank" rel="noopener"><span class="link-icon">📅</span><div><div class="link-title">Расписание на портале</div><div class="link-desc">Официальное</div></div></a>
+      <a class="link-card" href="https://www.novsu.ru" target="_blank" rel="noopener"><span class="link-icon">🏛</span><div><div class="link-title">Сайт НовГУ</div><div class="link-desc">Официальный</div></div></a>
+      <a class="link-card" href="https://www.novsu.ru/library/" target="_blank" rel="noopener"><span class="link-icon">📚</span><div><div class="link-title">Библиотека</div><div class="link-desc">Каталог</div></div></a>
+      <a class="link-card" href="https://vk.com/" target="_blank" rel="noopener"><span class="link-icon">🌐</span><div><div class="link-title">ВК ПТИ</div><div class="link-desc">Новости</div></div></a>
+      <a class="link-card" href="https://t.me/" target="_blank" rel="noopener"><span class="link-icon">💬</span><div><div class="link-title">Чат группы</div><div class="link-desc">Обсуждения</div></div></a>
+    </div>
+  </div>
+  <div class="info-section">
+    <h3>🎓 Студенческая жизнь</h3>
+    <p class="text-muted" style="font-size:var(--fs-sm);margin-bottom:var(--space-lg);">Спорт, творчество и волонтёрство — найди занятие по душе!</p>
+    <div id="studentLifeContent"></div>
+  </div>
+  <div class="info-section">
+    <h3>📱 QR-код портала</h3>
+    <p class="text-muted" style="font-size:var(--fs-sm);margin-bottom:var(--space-lg);">Покажи другу — он сразу на портале</p>
+    <div class="qr-container">
+      <img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=https%3A%2F%2Fpti-novsu.ru&margin=10" alt="QR-код pti-novsu.ru" class="qr-img">
+      <div class="qr-info">
+        <div class="qr-url">pti-novsu.ru</div>
+        <button class="quiz-button" id="copyUrlBtn" style="margin-top:var(--space-sm);">📋 Скопировать</button>
+      </div>
+    </div>
+  </div>
+  <div class="info-section">
+    <h3>📢 Объявления</h3>
+    <div class="admin-hint">🔒 Публикует только администратор. Картинки — по прямой ссылке с i.ibb.co, i.imgur.com или VK CDN.</div>
+    <div class="admin-area" id="adminArea">
+      <div class="admin-login">
+        <input type="email" id="adminEmail" placeholder="Email админа" autocomplete="username">
+        <input type="password" id="adminPassword" placeholder="Пароль" autocomplete="current-password">
+        <button id="adminLoginBtn">Войти</button>
+      </div>
+    </div>
+    <div class="notice-input-area" id="noticeInputArea" style="display:none;">
+      <input type="text" id="noticeInput" placeholder="Текст объявления..." maxlength="500">
+      <input type="text" id="noticeImageUrlInput" placeholder="Ссылка на картинку (https://i.ibb.co/...)" maxlength="500">
+      <button id="addNoticeBtn" class="quiz-button">Опубликовать</button>
+    </div>
+    <div id="noticeList" class="notice-list"><div class="notice-status">Загрузка...</div></div>
+    <span class="admin-toggle-link" id="adminToggleLink">Я администратор</span>
+  </div>
+  <div class="info-section" id="feedbackSection">
+    <h3>💬 Обратная связь</h3>
+    <p class="text-muted" style="font-size:var(--fs-sm);margin-bottom:var(--space-md);">Нашёл баг? Есть идея? Напиши — админ прочитает.</p>
+    <div class="notice-input-area">
+      <input type="text" id="feedbackInput" placeholder="Твоё сообщение..." maxlength="1000">
+      <button id="sendFeedbackBtn" class="quiz-button">Отправить</button>
+    </div>
+    <div class="bday-hint" style="margin-top:var(--space-sm);">💡 Анонимно. Сообщение увидит только админ.</div>
+    <div id="feedbackAdminArea" style="display:none;margin-top:var(--space-lg);">
+      <h4 style="margin-bottom:var(--space-sm);font-size:var(--fs-base);color:var(--primary);">📥 Входящие (только для админа):</h4>
+      <div id="feedbackList"></div>
+    </div>
+  </div>
+</section>
+
+<section id="tab-digital" class="tab-content">
+  <h2 style="margin-bottom:var(--space-xl);">🧠 Конструктор Цифровой кафедры</h2>
+  <div class="quiz-container">
+    <div id="quizArea"></div>
+    <div id="quizResult" style="display:none;"></div>
+  </div>
+</section>
+</main>
+
+<footer class="app-footer">
+  <div>Связаться с разработчиком:</div>
+  <div>Telegram: <a href="https://t.me/geniusmkss" target="_blank">@geniusmkss</a> · Email: <a href="mailto:geniusmkss.job@gmail.com">geniusmkss.job@gmail.com</a></div>
+</footer>
+
+<div class="mobile-tabbar" id="mobileTabbar">
+  <button class="tab-link active" data-tab="now"><span class="tab-icon">⚡</span>Сейчас</button>
+  <button class="tab-link" data-tab="schedule"><span class="tab-icon">📅</span>Пары</button>
+  <button class="tab-link" data-tab="map"><span class="tab-icon">🗺️</span>Карта</button>
+  <button class="tab-link" data-tab="info"><span class="tab-icon">ℹ️</span>Инфо</button>
+  <button class="tab-link" data-tab="digital"><span class="tab-icon">🧠</span>Цифра</button>
+</div>
+
+<div id="lessonEditModal" class="modal-overlay">
+  <div class="modal-content">
+    <h3>Редактировать занятие</h3>
+    <label>Время</label><input type="text" id="editTime">
+    <label>Тип</label><input type="text" id="editType">
+    <label>Предмет</label><input type="text" id="editSubject">
+    <label>Преподаватель</label><input type="text" id="editTeacher">
+    <label>Аудитория</label><input type="text" id="editRoom">
+    <label>Заметка</label><input type="text" id="editNote">
+    <label><input type="checkbox" id="editIsReplacement"> Это замена</label>
+    <button class="quiz-button" id="saveLessonEdit" style="margin-top:var(--space-sm);">Сохранить</button>
+    <button class="quiz-button" id="cancelLessonEdit" style="margin-top:var(--space-sm);background:#999;">Отмена</button>
+    <button class="quiz-button" id="addToGCalBtn" style="margin-top:var(--space-sm);background:#1a73e8;width:100%;">📅 Добавить в Google Calendar</button>
+    <input type="hidden" id="editDayIndex"><input type="hidden" id="editLessonIndex"><input type="hidden" id="editWeekType">
+  </div>
+</div>
+
+<div class="weather-modal-overlay" id="weatherModal">
+  <div class="weather-modal">
+    <button class="weather-modal-close" id="weatherModalClose">×</button>
+    <h3>🌡 Ансамблевый прогноз</h3>
+    <div id="weatherModelsContent">Загрузка...</div>
+  </div>
+</div>
+
+<div class="voice-overlay" id="voiceOverlay">
+  <button class="voice-close" id="voiceClose">×</button>
+  <div class="voice-pulse" id="voicePulse">🎤</div>
+  <div class="voice-transcript" id="voiceTranscript">Говорите...</div>
+  <div class="voice-hint" id="voiceHint">Например: «Что у меня завтра?»</div>
+  <div class="voice-answer" id="voiceAnswer" style="display:none;"></div>
+</div>
+
+<div class="offline-banner" id="offlineBanner"><span class="offline-dot"></span><span>Нет подключения — работаем офлайн</span></div>
+<div id="lessonNotification" class="notification"></div>
+
+<script src="https://api-maps.yandex.ru/2.1/?apikey=ВАШ_YANDEX_API_KEY&lang=ru_RU"></script>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import {
+  getFirestore, initializeFirestore, persistentLocalCache, persistentMultipleTabManager,
+  collection, addDoc, onSnapshot, deleteDoc, doc, query, orderBy,
+  serverTimestamp, setDoc, limit, getDocs, getDoc
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import {
+  getStorage, ref as storageRef, uploadBytes, getDownloadURL, deleteObject
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
+
+const firebaseConfig = {
+  apiKey: "ВАШ_API_KEY",
+  authDomain: "pti-novsu.firebaseapp.com",
+  projectId: "pti-novsu",
+  storageBucket: "pti-novsu.appspot.com",
+  messagingSenderId: "ВАШ_SENDER_ID",
+  appId: "ВАШ_APP_ID"
+};
+const app = initializeApp(firebaseConfig);
+
+// Офлайн-кэш Firestore
+let db;
+try {
+  db = initializeFirestore(app, {
+    localCache: persistentLocalCache({ tabManager: persistentMultipleTabManager() })
+  });
+  console.log('[Firestore] Офлайн-кэш включён');
+} catch(e) {
+  console.warn('[Firestore] Офлайн-кэш не удалось включить:', e.message);
+  db = getFirestore(app);
+}
+
+const auth = getAuth(app);
+const storage = getStorage(app);
+
+window.firebaseFns = {
+  db, auth, storage,
+  collection, addDoc, onSnapshot, deleteDoc, doc, query, orderBy,
+  serverTimestamp, setDoc, limit, getDocs, getDoc,
+  signInWithEmailAndPassword, signOut, onAuthStateChanged,
+  storageRef, uploadBytes, getDownloadURL, deleteObject
+};
+window.dispatchEvent(new Event('firebase-ready'));
+</script>
+
+<script>
+/* ============================================================
+   КОНФИГ
+   ============================================================ */
+const GIGACHAT_CLIENT_ID = null;
+const GIGACHAT_AUTH_KEY = null;
+
+/* ============================================================
+   ДАННЫЕ РАСПИСАНИЯ (fallback)
+   ============================================================ */
+const scheduleData = {
+  "6311": { course: 1, schedule: [
+    // 1. ПОНЕДЕЛЬНИК
+    {
+      upper: [
+        { time: "09:00-10:00", type: "Практика", subject: "Русский язык и культура речи", teacher: "Макаров Валентин Иванович", room: "4поточная" },
+        { time: "12:00-14:00", type: "Практика", subject: "Алгебра и геометрия", teacher: "Мордвинкин Константин Владимирович", room: "1311" },
+        { time: "15:00-16:00", type: "Лабораторная", subject: "Информатика (подгруппа 1)", teacher: "Неустрова Светлана Викторовна", room: "1303" }
+      ],
+      lower: [
+        { time: "09:00-10:00", type: "Практика", subject: "Русский язык и культура речи", teacher: "Макаров Валентин Иванович", room: "4поточная" },
+        { time: "12:00-14:00", type: "Практика", subject: "Алгебра и геометрия", teacher: "Мордвинкин Константин Владимирович", room: "1311" },
+        { time: "15:00-16:00", type: "Лабораторная", subject: "Вычислительный практикум (подгруппа 2)", teacher: "Неустрова Светлана Викторовна", room: "5поточная" }
+      ]
+    },
+    // 2. ВТОРНИК
+    {
+      upper: [
+        { time: "09:00-10:00", type: "Лабораторная", subject: "Информатика (подгруппа 2)", teacher: "Неустрова Светлана Викторовна", room: "1303" },
+        { time: "11:00-12:00", type: "Практика", subject: "Основы российской государственности", teacher: "Савельев Алексей Сергеевич", room: "1100(6)" },
+        { time: "14:00-17:00", type: "Практика", subject: "Психология (по 27.10)", teacher: "Сластёнина Д. Н.", room: "5поточная" }
+      ],
+      lower: [
+        { time: "09:00-10:00", type: "Лабораторная", subject: "Вычислительный практикум (подгруппа 1)", teacher: "Неустрова Светлана Викторовна", room: "5поточная" },
+        { time: "11:00-12:00", type: "Практика", subject: "Основы российской государственности", teacher: "Савельев Алексей Сергеевич", room: "1100(6)" },
+        { time: "13:00-14:00", type: "Практика", subject: "История России", teacher: "Андреев Г. Д.", room: "5поточная" },
+        { time: "14:00-17:00", type: "Лекция", subject: "Основы российской государственности", teacher: "Савельев А. С.", room: "ДОТ" }
+      ]
+    },
+    // 3. СРЕДА
+    {
+      upper: [
+        { time: "10:00-11:00", type: "Лек./Пр.", subject: "Физическая культура и спорт", teacher: "Павлова Елена Игоревна", room: "Спортзал" },
+        { time: "11:00-12:00", type: "Лекция", subject: "Алгебра и геометрия", teacher: "Неустроев Николай Васильевич", room: "4поточная" },
+        { time: "14:00-16:00", type: "Практика", subject: "Математический анализ", teacher: "Буту Алина Владимировна", room: "3207" }
+      ],
+      lower: [
+        { time: "10:00-11:00", type: "Лек./Пр.", subject: "Физическая культура и спорт", teacher: "Павлова Елена Игоревна", room: "Спортзал" },
+        { time: "11:00-12:00", type: "Лекция", subject: "Алгебра и геометрия", teacher: "Неустроев Николай Васильевич", room: "4поточная" },
+        { time: "14:00-16:00", type: "Практика", subject: "Математический анализ", teacher: "Буту Алина Владимировна", room: "3207" }
+      ]
+    },
+    // 4. ЧЕТВЕРГ
+    {
+      upper: [
+        { time: "09:00-10:00", type: "Лекция", subject: "Правоведение (по 15.10)", teacher: "Антонова Татьяна Александровна", room: "4поточная" },
+        { time: "11:00-12:00", type: "Лекция", subject: "Психология (по 15.10)", teacher: "Галжибабаева Д. Р.", room: "2поточная" },
+        { time: "14:00-...", type: "Лек./Пр.", subject: "Основы проектной деятельности", teacher: "Кафедра", room: "По расписанию" }
+      ],
+      lower: [
+        { time: "09:00-10:00", type: "Лекция", subject: "История России (по 05.11)", teacher: "Матвеев Олег Владимирович", room: "2поточная" },
+        { time: "11:00-12:00", type: "Лекция", subject: "Информатика (по 03.12)", teacher: "Неустрова Светлана Викторовна", room: "2поточная" },
+        { time: "14:00-...", type: "Лек./Пр.", subject: "Основы проектной деятельности", teacher: "Кафедра", room: "По расписанию" }
+      ]
+    },
+    // 5. ПЯТНИЦА
+    {
+      upper: [
+        { time: "09:00-10:00", type: "Практика", subject: "Информатика", teacher: "Неустрова С. В.", room: "3312" },
+        { time: "11:00-12:00", type: "Практика", subject: "Вычислительный практикум", teacher: "Неустрова С. В.", room: "5поточная" },
+        { time: "13:00-14:00", type: "Лекция", subject: "Математический анализ", teacher: "Сухачева Тамара Геннадьевна", room: "4поточная" }
+      ],
+      lower: [
+        { time: "11:00-12:00", type: "Практика", subject: "Правоведение", teacher: "Антонова Т. А.", room: "3312" },
+        { time: "13:00-14:00", type: "Лекция", subject: "Математический анализ", teacher: "Сухачева Тамара Геннадьевна", room: "4поточная" },
+        { time: "16:00-17:00", type: "Практика", subject: "Иностранный язык (Английский)", teacher: "Костина Нина Николаевна", room: "1334 (ИГУМ)" }
+      ]
+    },
+    // 6. СУББОТА
+    {
+      upper: [
+        { time: "09:00-10:00", type: "Практика", subject: "Иностранный язык (Немецкий)", teacher: "Барышева Ангелина Алексеевна", room: "1304 (ИГУМ)" },
+        { time: "12:00-13:00", type: "Лекция", subject: "Развитие воли и самоорганизации (03.10-24.10)", teacher: "Киктенко М. В.", room: "1поточная" }
+      ],
+      lower: [
+        { time: "09:00-10:00", type: "Практика", subject: "Иностранный язык", teacher: "Преподаватель", room: "ДОТ" },
+        { time: "15:00-16:00", type: "Лек./Пр.", subject: "История России", teacher: "Преподаватель", room: "ДОТ" }
+      ]
+    }
+  ]}
+};
+
+const digitalPrograms = [
+  { id: "ai-project", name: "Управление проектами в области ИИ", desc: "Управление AI-проектами." },
+  { id: "design", name: "Графический дизайн", desc: "Дизайн, вёрстка, брендинг." },
+  { id: "mobile", name: "Разработка мобильных приложений", desc: "iOS и Android." },
+  { id: "data-science", name: "Анализ данных и ML", desc: "Большие данные, ML." },
+  { id: "security", name: "Кибербезопасность", desc: "Защита информации." },
+  { id: "iot", name: "IoT и беспроводная связь", desc: "Устройства IoT." }
+];
+const quizQuestions = [
+  { question: "Какой тип задач тебе ближе?", options: [
+    { text: "Продукты и сервисы", weights: { mobile: 3, design: 1, iot: 2 } },
+    { text: "Анализ данных", weights: { "data-science": 3, "ai-project": 1 } },
+    { text: "Безопасность", weights: { security: 3 } },
+    { text: "Управление", weights: { "ai-project": 3 } }
+  ]},
+  { question: "Данные или люди?", options: [
+    { text: "Данные", weights: { "data-science": 2, security: 1, iot: 1 } },
+    { text: "Люди", weights: { "ai-project": 2, design: 2 } },
+    { text: "Оба", weights: { mobile: 1, design: 1 } },
+    { text: "Техника", weights: { iot: 2, mobile: 2 } }
+  ]},
+  { question: "Творчество?", options: [
+    { text: "Да", weights: { design: 3 } },
+    { text: "Скорее да", weights: { mobile: 1, "ai-project": 1 } },
+    { text: "Нейтрально", weights: { "data-science": 1, security: 1 } },
+    { text: "Алгоритмы", weights: { "data-science": 2, security: 2 } }
+  ]},
+  { question: "Что важнее?", options: [
+    { text: "Функционал", weights: { mobile: 2, iot: 2 } },
+    { text: "Безопасность", weights: { security: 3 } },
+    { text: "Дизайн", weights: { design: 3 } },
+    { text: "Управление", weights: { "ai-project": 2, "data-science": 1 } }
+  ]},
+  { question: "Какая область интереснее?", options: [
+    { text: "ИИ", weights: { "ai-project": 2, "data-science": 2 } },
+    { text: "Мобильные", weights: { mobile: 2 } },
+    { text: "Защита", weights: { security: 2 } },
+    { text: "IoT", weights: { iot: 2 } }
+  ]}
+];
+const digitalContacts = { room: "3224", address: "ул. Б. Санкт-Петербургская, д. 41", email: "digital@novsu.ru" };
+
+const studentClubs = [
+  { name: 'Новгородские Рыси | ССК НовГУ', desc: 'Спортивный клуб: 18+ секций — волейбол, баскетбол, плавание, лёгкая атлетика и другие.', icon: '🏆', url: 'https://vk.ru/sport_novsu', tag: 'Спорт', category: 'sport' },
+  { name: 'Добро.Центр НовГУ', desc: 'Волонтёрский центр: помогай другим, участвуй в проектах, получай опыт и баллы.', icon: '🤝', url: 'https://vk.ru/volonternovsu', tag: 'Волонтёрство', category: 'volunteer' },
+  { name: 'Театральная студия «Амплуа»', desc: 'Актёрское мастерство, постановки, фестивали. Набор круглый год!', icon: '🎭', url: 'https://vk.com/amplea_theatre', tag: 'Творчество', category: 'creative' },
+  { name: 'Вокальная студия «MIX»', desc: 'Эстрадный вокал, выступления на большой сцене, любимые песни.', icon: '🎤', url: 'https://vk.com/mix_novsu', tag: 'Творчество', category: 'creative' },
+  { name: 'Творческое объединение «Калейдоскоп»', desc: 'Академический вокал, ансамбль «Элегия», участие в концертах.', icon: '🎶', url: 'https://vk.com/kaleidoscope_novsu', tag: 'Творчество', category: 'creative' },
+  { name: 'Гражданско-патриотический клуб «Сердце помнит»', desc: 'Поисковые отряды, спектакли, патриотические акции.', icon: '❤️', url: 'https://vk.com/serdce_pomnit', tag: 'Общество', category: 'volunteer' },
+  { name: 'Студенческий совет НовГУ', desc: 'Самоуправление, организация мероприятий, защита прав студентов.', icon: '🏛️', url: 'https://vk.com/studsovet.novsu', tag: 'Общество', category: '' },
+  { name: 'Студенческий профком НовГУ', desc: 'Защита прав студентов, путёвки, льготы, консультации.', icon: '📋', url: 'https://vk.com/profkom_novsu', tag: 'Общество', category: '' }
+];
+
+/* ============================================================
+   СОСТОЯНИЕ
+   ============================================================ */
+const appState = {
+  currentTab: 'now',
+  weekOffset: 0,
+  selectedGroup: '6711',
+  hideWeekends: false,
+  searchQuery: '',
+  selectedTeacher: '',
+  quizAnswers: [],
+  quizCurrentQuestion: 0,
+  firebaseReady: false,
+  isAdmin: false,
+  currentAdminEmail: '',
+  unsubscribeNotices: null,
+  unsubscribeBirthdays: null,
+  unsubscribeFeedback: null,
+  soundEnabled: localStorage.getItem('pti_sound_enabled') !== 'false',
+  audioCtx: null
+};
+
+const savedResultsKey = 'pti_quiz_results';
+const themeKey = 'pti_theme';
+const groupKey = 'pti_selected_group';
+const courseKey = 'pti_selected_course';
+const editsStorageKey = 'pti_lesson_edits';
+const achievementsKey = 'pti_achievements';
+const visitsKey = 'pti_visits';
+const uuidKey = 'pti_uuid';
+const NOTIF_ENABLED_KEY = 'pti_notif_enabled';
+const NOTIF_MINUTES_BEFORE = 15;
+const FEEDBACK_COOLDOWN = 30;
+const notifiedLessons = new Set();
+let notificationTimer = null;
+let feedbackCooldownTimer = null;
+
+const $ = id => document.getElementById(id);
+const tabLinks = document.querySelectorAll('.tab-link');
+const tabContents = document.querySelectorAll('.tab-content');
+
+function escapeHTML(s) {
+  if (s == null) return '';
+  return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+}
+function getAcademicWeek() {
+  const n = new Date();
+  let y = n.getFullYear();
+  let s = new Date(y, 8, 1);
+  if (n < s) s = new Date(y - 1, 8, 1);
+  return Math.floor((n - s) / (1000 * 60 * 60 * 24) / 7) + 1;
+}
+function getWeekType() {
+  const aw = getAcademicWeek() + appState.weekOffset;
+  return aw % 2 === 0 ? 'lower' : 'upper';
+}
+function getWeekDates(o) {
+  const n = new Date();
+  const d = n.getDay();
+  const diff = n.getDate() - d + (d === 0 ? -6 : 1);
+  const m = new Date(n.setDate(diff));
+  m.setDate(m.getDate() + o * 7);
+  return Array.from({ length: 7 }, (_, i) => { const dd = new Date(m); dd.setDate(m.getDate() + i); return dd; });
+}
+function formatDate(d) { return d.toLocaleDateString('ru-RU', { day: 'numeric', month: 'short' }); }
+function getDeviceUuid() {
+  let u = localStorage.getItem(uuidKey);
+  if (!u) { u = 'u_' + Math.random().toString(36).slice(2, 10) + Date.now().toString(36); localStorage.setItem(uuidKey, u); }
+  return u;
+}
+function getCounter(k) { return parseInt(localStorage.getItem('pti_counter_' + k) || '0'); }
+function incCounter(k, max = 999) { const v = getCounter(k) + 1; localStorage.setItem('pti_counter_' + k, Math.min(v, max)); return v; }
+
+/* ============================================================
+   ЗВУК
+   ============================================================ */
+function initAudio() {
+  if (!appState.audioCtx) try { appState.audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) {}
+  if (appState.audioCtx && appState.audioCtx.state === 'suspended') appState.audioCtx.resume();
+}
+function playNote(freq, start, dur, type, vol) {
+  if (!appState.audioCtx || !appState.soundEnabled) return;
+  const osc = appState.audioCtx.createOscillator();
+  const gain = appState.audioCtx.createGain();
+  osc.type = type || 'sine';
+  osc.frequency.setValueAtTime(freq, start);
+  gain.gain.setValueAtTime(0, start);
+  gain.gain.linearRampToValueAtTime(vol || 0.15, start + 0.02);
+  gain.gain.exponentialRampToValueAtTime(0.001, start + dur);
+  osc.connect(gain); gain.connect(appState.audioCtx.destination);
+  osc.start(start); osc.stop(start + dur);
+}
+function playAchievementSound(rarity) {
+  if (!appState.soundEnabled) return;
+  initAudio();
+  if (!appState.audioCtx) return;
+  const now = appState.audioCtx.currentTime;
+  if (rarity === 'common') playNote(660, now, 0.15, 'sine', 0.12);
+  else if (rarity === 'rare') { playNote(523, now, 0.2, 'triangle', 0.12); playNote(659, now + 0.1, 0.25, 'triangle', 0.12); }
+  else if (rarity === 'epic') {
+    playNote(523, now, 0.15, 'triangle', 0.13);
+    playNote(659, now + 0.09, 0.15, 'triangle', 0.13);
+    playNote(784, now + 0.18, 0.15, 'triangle', 0.13);
+    playNote(1046, now + 0.27, 0.35, 'sine', 0.14);
+  } else if (rarity === 'legendary') {
+    playNote(523, now, 0.2, 'triangle', 0.14);
+    playNote(659, now + 0.1, 0.2, 'triangle', 0.14);
+    playNote(784, now + 0.2, 0.2, 'triangle', 0.14);
+    playNote(1046, now + 0.3, 0.6, 'sine', 0.16);
+    playNote(1318, now + 0.3, 0.6, 'sine', 0.10);
+    playNote(1568, now + 0.5, 0.8, 'sine', 0.08);
+  }
+}
+function toggleSound() {
+  appState.soundEnabled = !appState.soundEnabled;
+  localStorage.setItem('pti_sound_enabled', appState.soundEnabled ? 'true' : 'false');
+  updateSoundButton();
+  if (appState.soundEnabled) { initAudio(); if (appState.audioCtx) playNote(880, appState.audioCtx.currentTime, 0.1, 'sine', 0.1); }
+}
+function updateSoundButton() {
+  const b = $('soundToggle');
+  if (!b) return;
+  b.textContent = appState.soundEnabled ? '🔊' : '🔇';
+  b.classList.toggle('muted', !appState.soundEnabled);
+}
+
+/* ============================================================
+   АЧИВКИ
+   ============================================================ */
+const ACHIEVEMENTS = [
+  { id: 'first_visit', icon: '👋', title: 'Первый шаг', desc: 'Открыл портал впервые', rarity: 'common' },
+  { id: 'weather_user', icon: '🌤', title: 'Метеоролог', desc: 'Посмотрел прогноз', rarity: 'common' },
+  { id: 'dark_side', icon: '🌙', title: 'Тёмная сторона', desc: 'Включил тёмную тему', rarity: 'common' },
+  { id: 'no_pairs', icon: '🎉', title: 'Свободный день', desc: 'Открыл в день без пар', rarity: 'common' },
+  { id: 'map_user', icon: '🗺️', title: 'Картограф', desc: 'Открыл карту', rarity: 'common' },
+  { id: 'quiz_master', icon: '🧠', title: 'Профориентатор', desc: 'Прошёл тест', rarity: 'rare' },
+  { id: 'exporter', icon: '📸', title: 'Экспортёр', desc: 'Сохранил PNG', rarity: 'rare' },
+  { id: 'ical_master', icon: '📅', title: 'Календарь-гуру', desc: 'Экспорт в iCal', rarity: 'rare' },
+  { id: 'gcal_user', icon: '🔗', title: 'Синхронизатор', desc: 'Добавил в Google Calendar', rarity: 'rare' },
+  { id: 'editor', icon: '✏️', title: 'Редактор', desc: 'Отредактировал занятие', rarity: 'rare' },
+  { id: 'voice_user', icon: '🎤', title: 'Голосовой пилот', desc: 'Задал голосовой вопрос', rarity: 'rare' },
+  { id: 'search_master', icon: '🔍', title: 'Следопыт', desc: 'Искал 5 раз', rarity: 'rare' },
+  { id: 'notif_master', icon: '🔔', title: 'На связи', desc: 'Включил уведомления', rarity: 'rare' },
+  { id: 'night_owl', icon: '🦉', title: 'Полуночник', desc: 'Заходил после 00:00', rarity: 'rare' },
+  { id: 'weekend_warrior', icon: '🎮', title: 'Субботний воин', desc: 'Заходил в субботу', rarity: 'rare' },
+  { id: 'bday_congrats', icon: '🎂', title: 'Поздравитель', desc: 'Добавил свой ДР', rarity: 'rare' },
+  { id: 'feedback_hero', icon: '💬', title: 'Не молчи', desc: 'Оставил обратную связь', rarity: 'rare' },
+  { id: 'early_bird', icon: '🌅', title: 'Ранняя птица', desc: 'Заходил до 6 утра', rarity: 'epic' },
+  { id: 'marathon', icon: '🏃', title: 'Марафонец', desc: '30+ минут за раз', rarity: 'epic' },
+  { id: 'schedule_master', icon: '📅', title: 'Знаток расписания', desc: '30+ заходов', rarity: 'epic' },
+  { id: 'voice_guru', icon: '🎙', title: 'Голосовой гуру', desc: '10 голосовых вопросов', rarity: 'epic' },
+  { id: 'explorer', icon: '🧭', title: 'Исследователь', desc: 'Все 5 вкладок за день', rarity: 'epic' },
+  { id: 'exam_survivor', icon: '🎓', title: 'Выжил в сессии', desc: 'Заходил в январе/июне', rarity: 'epic' },
+  { id: 'admin_helper', icon: '🛡', title: 'Помощник', desc: 'Вошёл как админ', rarity: 'epic' },
+  { id: 'replacement_spotter', icon: '⚠️', title: 'Заметил замену', desc: 'Увидел замену', rarity: 'epic' },
+  { id: 'returning', icon: '🔥', title: 'Возвращенец', desc: '7 дней подряд', rarity: 'legendary' },
+  { id: 'loyal', icon: '💎', title: 'Верный порталу', desc: '30 дней подряд', rarity: 'legendary' },
+  { id: 'collector_10', icon: '🥈', title: 'Опытный', desc: '10 достижений', rarity: 'legendary' },
+  { id: 'collector_20', icon: '🥇', title: 'Гуру портала', desc: '20 достижений', rarity: 'legendary' },
+  { id: 'collector_all', icon: '👑', title: 'Легенда ПТИ', desc: 'Все достижения', rarity: 'legendary' }
+];
+const RARITY_NAMES = { common: 'Обычная', rare: 'Редкая', epic: 'Эпическая', legendary: 'Легендарная' };
+const RARITY_ICONS = { common: '🥉', rare: '🥈', epic: '🥇', legendary: '💎' };
+
+function getUnlocked() { try { return JSON.parse(localStorage.getItem(achievementsKey) || '[]'); } catch(e) { return []; } }
+function unlockAchievement(id) {
+  const u = getUnlocked();
+  if (u.includes(id)) return;
+  if (id === 'collector_10' && u.length < 10) return;
+  if (id === 'collector_20' && u.length < 20) return;
+  if (id === 'collector_all' && u.length < ACHIEVEMENTS.length - 1) return;
+  u.push(id);
+  localStorage.setItem(achievementsKey, JSON.stringify(u));
+  renderAchievements();
+  const ach = ACHIEVEMENTS.find(a => a.id === id);
+  if (ach) showAchToast(ach);
+  setTimeout(() => {
+    if (u.length >= 10) unlockAchievement('collector_10');
+    if (u.length >= 20) unlockAchievement('collector_20');
+    if (u.length >= ACHIEVEMENTS.length - 1) unlockAchievement('collector_all');
+  }, 100);
+  if (typeof syncRating === 'function') setTimeout(syncRating, 500);
+}
+function showAchToast(ach) {
+  playAchievementSound(ach.rarity);
+  const t = document.createElement('div');
+  t.className = 'ach-toast rarity-' + ach.rarity;
+  t.innerHTML = `<div style="display:flex;align-items:center;gap:12px;"><span style="font-size:2rem;">${ach.icon}</span><div><div style="font-size:.7rem;opacity:.85;text-transform:uppercase;letter-spacing:.5px;">${RARITY_ICONS[ach.rarity]} ${RARITY_NAMES[ach.rarity]}</div><div style="font-weight:700;font-size:1rem;margin-top:2px;">${ach.title}</div></div></div>`;
+  document.body.appendChild(t);
+  if (ach.rarity === 'epic' || ach.rarity === 'legendary') spawnConfetti(ach.rarity === 'legendary' ? 60 : 30);
+  setTimeout(() => { t.style.animation = 'slideOutToast .5s var(--ease) forwards'; setTimeout(() => t.remove(), 500); }, ach.rarity === 'legendary' ? 6000 : ach.rarity === 'epic' ? 5000 : 4000);
+}
+function spawnConfetti(count) {
+  const colors = ['#ffd700', '#ff9800', '#f44336', '#4caf50', '#2196f3', '#9c27b0'];
+  for (let i = 0; i < count; i++) {
+    const c = document.createElement('div');
+    c.className = 'confetti';
+    c.style.left = Math.random() * 100 + '%';
+    c.style.background = colors[Math.floor(Math.random() * colors.length)];
+    c.style.animationDuration = (1.5 + Math.random() * 2) + 's';
+    c.style.animationDelay = (Math.random() * 0.4) + 's';
+    c.style.width = (6 + Math.random() * 8) + 'px';
+    c.style.height = (6 + Math.random() * 8) + 'px';
+    c.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+    document.body.appendChild(c);
+    setTimeout(() => c.remove(), 4000);
+  }
+}
+function renderAchievements() {
+  const c = $('achievementsContent');
+  if (!c) return;
+  const u = getUnlocked();
+  const done = u.length;
+  const total = ACHIEVEMENTS.length;
+  const percent = Math.round((done / total) * 100);
+  const byR = { common: 0, rare: 0, epic: 0, legendary: 0 };
+  const totR = { common: 0, rare: 0, epic: 0, legendary: 0 };
+  ACHIEVEMENTS.forEach(a => { totR[a.rarity]++; if (u.includes(a.id)) byR[a.rarity]++; });
+  let html = `<div class="ach-progress"><div class="ach-progress-header"><span>Собрано: <strong>${done}</strong> из <strong>${total}</strong></span><span class="ach-percent">${percent}%</span></div><div class="ach-progress-bar"><div class="ach-progress-fill" style="width:${percent}%"></div></div><div class="ach-rarity-stats"><span class="ach-stat common">🥉 ${byR.common}/${totR.common}</span><span class="ach-stat rare">🥈 ${byR.rare}/${totR.rare}</span><span class="ach-stat epic">🥇 ${byR.epic}/${totR.epic}</span><span class="ach-stat legendary">💎 ${byR.legendary}/${totR.legendary}</span></div></div><div class="ach-grid">`;
+  const order = { legendary: 0, epic: 1, rare: 2, common: 3 };
+  const sorted = [...ACHIEVEMENTS].sort((a, b) => {
+    const aU = u.includes(a.id), bU = u.includes(b.id);
+    if (aU !== bU) return aU ? -1 : 1;
+    return order[a.rarity] - order[b.rarity];
+  });
+  sorted.forEach((a, i) => {
+    const unlocked = u.includes(a.id);
+    html += `<div class="ach-item ${unlocked ? 'unlocked' : 'locked'} rarity-${a.rarity}" style="animation-delay:${i * 0.04}s"><div class="ach-icon-wrap">${unlocked ? a.icon : '🔒'}</div><div class="ach-content"><div class="ach-rarity">${RARITY_ICONS[a.rarity]} ${RARITY_NAMES[a.rarity]}</div><div class="ach-title">${a.title}</div><div class="ach-desc">${a.desc}</div></div></div>`;
+  });
+  html += '</div>';
+  c.innerHTML = html;
+}
+
+/* ============================================================
+   ЭКРАН "СЕЙЧАС"
+   ============================================================ */
+function applyPeriodFilter(l) {
+  const aw = getAcademicWeek() + appState.weekOffset;
+  const p = l.period || 'always';
+  if (p === 'before9' && aw > 9) return false;
+  if (p === 'after9' && aw <= 9) return false;
+  return true;
+}
+function applySearchFilter(l) {
+  if (appState.searchQuery) {
+    const h = `${l.subject} ${l.teacher} ${l.room} ${l.type || ''}`.toLowerCase();
+    if (!h.includes(appState.searchQuery)) return false;
+  }
+  if (appState.selectedTeacher && l.teacher !== appState.selectedTeacher) return false;
+  return true;
+}
+function updateNowTab() {
+  const c = $('nowContent');
+  if (!c || !scheduleData[appState.selectedGroup]) return;
+  const now = new Date();
+  const di = now.getDay() === 0 ? 6 : now.getDay() - 1;
+  const wt = getWeekType();
+  const ls = (scheduleData[appState.selectedGroup].schedule[di]?.[wt] || []).filter(applyPeriodFilter).sort((a, b) => a.time.localeCompare(b.time));
+  const cm = now.getHours() * 60 + now.getMinutes();
+  let cur = null, nx = null;
+  for (const l of ls) {
+    const [s, e] = l.time.split('-').map(t => t.trim());
+    const [sh, sm] = s.split(':').map(Number);
+    const [eh, em] = e.split(':').map(Number);
+    const sM = sh * 60 + sm, eM = eh * 60 + em;
+    if (cm >= sM && cm <= eM) cur = { ...l, sM, eM };
+    else if (cm < sM && !nx) nx = { ...l, sM, eM };
+  }
+  let html = '';
+  if (cur) {
+    const left = cur.eM - cm;
+    html += `<div style="margin-bottom:var(--space-lg);"><h3 style="color:var(--primary);margin-bottom:var(--space-sm);">🔔 Сейчас идёт</h3><div style="background:#e8f5e9;padding:var(--space-lg);border-radius:var(--radius);border-left:4px solid var(--success);"><h4 style="margin-bottom:4px;">${escapeHTML(cur.subject)}</h4><p class="text-muted">${escapeHTML(cur.type || '')} · ауд. ${escapeHTML(cur.room || '—')} · ${escapeHTML(cur.teacher)}</p><p style="font-weight:bold;color:var(--success);margin-top:var(--space-sm);">До конца: ${Math.floor(left / 60)} ч ${left % 60} мин</p></div></div>`;
+  }
+  if (nx) {
+    const wait = nx.sM - cm;
+    html += `<div style="margin-bottom:var(--space-lg);"><h3 style="color:var(--primary);margin-bottom:var(--space-sm);">⏭ Следующая пара</h3><div style="background:#e3f2fd;padding:var(--space-lg);border-radius:var(--radius);border-left:4px solid var(--info);"><h4 style="margin-bottom:4px;">${escapeHTML(nx.subject)}</h4><p class="text-muted">${escapeHTML(nx.type || '')} · ауд. ${escapeHTML(nx.room || '—')} · ${escapeHTML(nx.teacher)}</p><p style="font-weight:bold;color:var(--info);margin-top:var(--space-sm);">Начало через: ${Math.floor(wait / 60)} ч ${wait % 60} мин</p></div></div>`;
+  }
+  if (!cur && !nx) html = `<p class="text-muted" style="text-align:center;padding:var(--space-xl);">Сегодня пар больше нет 🎉</p>`;
+  c.innerHTML = html;
+}
+
+/* ============================================================
+   СТАТИСТИКА
+   ============================================================ */
+function animateCounter(el, target, dur = 1200) {
+  const start = performance.now();
+  function upd(t) {
+    const p = Math.min((t - start) / dur, 1);
+    const e = 1 - Math.pow(1 - p, 3);
+    el.textContent = Math.round(target * e);
+    if (p < 1) requestAnimationFrame(upd);
+  }
+  requestAnimationFrame(upd);
+}
+function updateStats() {
+  const c = $('statsContent');
+  if (!c || !scheduleData[appState.selectedGroup]) return;
+  const all = [];
+  scheduleData[appState.selectedGroup].schedule.forEach(d => [...(d.upper || []), ...(d.lower || [])].forEach(l => all.push(l)));
+  const byS = {};
+  all.forEach(l => {
+    const [s, e] = l.time.split('-').map(t => t.trim());
+    const [sh, sm] = s.split(':').map(Number);
+    const [eh, em] = e.split(':').map(Number);
+    const h = (eh * 60 + em - sh * 60 - sm) / 60;
+    if (!byS[l.subject]) byS[l.subject] = { h: 0, count: 0 };
+    byS[l.subject].h += h; byS[l.subject].count++;
+  });
+  const now = new Date();
+  let end = new Date(now.getFullYear(), 11, 25);
+  if (now > end) end.setFullYear(end.getFullYear() + 1);
+  const days = Math.ceil((end - now) / 86400000);
+  const top = Object.entries(byS).sort((a, b) => b[1].h - a[1].h).slice(0, 5);
+  const maxH = top[0] ? top[0][1].h : 1;
+  let html = `<div class="stat-grid"><div class="stat-card" style="background:#e3f2fd;"><div class="stat-num" id="statDays" style="color:var(--info);">0</div><div class="stat-label">дней до конца семестра</div></div><div class="stat-card" style="background:#e8f5e9;"><div class="stat-num" id="statLessons" style="color:var(--success);">0</div><div class="stat-label">пар всего</div></div><div class="stat-card" style="background:#fff3e0;"><div class="stat-num" id="statSubjects" style="color:var(--warning);">0</div><div class="stat-label">предметов</div></div></div><h4 style="margin-bottom:var(--space-md);">Топ предметов по часам:</h4>`;
+  top.forEach(([subj, data]) => {
+    html += `<div style="margin-bottom:var(--space-md);"><div class="flex-between" style="margin-bottom:4px;"><span style="font-weight:600;">${escapeHTML(subj)}</span><span class="text-muted">${data.h.toFixed(1)} ч</span></div><div class="progress-bar"><div class="progress-fill" data-width="${(data.h / maxH * 100).toFixed(0)}%"></div></div></div>`;
+  });
+  c.innerHTML = html;
+  setTimeout(() => {
+    if ($('statDays')) animateCounter($('statDays'), days, 1500);
+    if ($('statLessons')) animateCounter($('statLessons'), all.length, 1500);
+    if ($('statSubjects')) animateCounter($('statSubjects'), Object.keys(byS).length, 1500);
+    document.querySelectorAll('.progress-fill').forEach((el, i) => setTimeout(() => el.style.width = el.dataset.width, i * 150));
+  }, 100);
+}
+
+/* ============================================================
+   РАСПИСАНИЕ
+   ============================================================ */
+function updateWeekRange() {
+  const d = getWeekDates(appState.weekOffset);
+  $('weekRange').textContent = `${formatDate(d[0])} — ${formatDate(d[6])}`;
+}
+function isDayHidden(i, l) {
+  if (!appState.hideWeekends) return false;
+  if (i === 6) return true;
+  if (i === 5 && l.length === 0) return true;
+  return false;
+}
+function updateWeekBadges(weekType, academicWeek) {
+  $('weekTypeBadge').textContent = weekType === 'upper' ? 'Верхняя' : 'Нижняя';
+  $('weekTypeBadge').className = 'week-type-badge' + (weekType === 'lower' ? ' lower' : '');
+  $('weekNumBadge').textContent = `Неделя ${academicWeek}`;
+}
+function collectDayLessons(weekType) {
+  const sc = scheduleData[appState.selectedGroup].schedule;
+  let edits = {};
+  try { edits = JSON.parse(localStorage.getItem(editsStorageKey) || '{}'); } catch(e) {}
+  return sc.map((day, di) => {
+    let lessons = day[weekType] || [];
+    lessons = lessons.map((l, li) => {
+      const k = `${appState.selectedGroup}|${weekType}|${di}|${li}`;
+      return edits[k] ? { ...l, ...edits[k] } : l;
+    });
+    return lessons.filter(applyPeriodFilter);
+  });
+}
+function getVisibleDays(dayLessons) {
+  const visible = [];
+  for (let i = 0; i < 7; i++) if (!isDayHidden(i, dayLessons[i])) visible.push(i);
+  return visible;
+}
+function renderLessonItem(lesson, dayIdx, weekType, allLessons, animIdx) {
+  const rc = lesson.isReplacement ? 'replacement' : '';
+  const ri = lesson.isReplacement ? ' ⚠️' : '';
+  const oi = allLessons.indexOf(lesson);
+  return `<div class="lesson-item ${rc}" data-day="${dayIdx}" data-lesson="${oi}" data-week="${weekType}" style="animation-delay:${animIdx * 0.06}s">
+    <div class="lesson-time">${escapeHTML(lesson.time)}</div>
+    ${lesson.type ? `<div class="lesson-type">${escapeHTML(lesson.type)}</div>` : ''}
+    <div class="lesson-subject">${escapeHTML(lesson.subject)}${ri}</div>
+    <div class="lesson-teacher">${escapeHTML(lesson.teacher)}</div>
+    ${lesson.room && lesson.room !== '—' ? `<div class="lesson-room">Ауд. ${escapeHTML(lesson.room)}</div>` : ''}
+    ${lesson.note ? `<div class="lesson-note">📝 ${escapeHTML(lesson.note)}</div>` : ''}
+  </div>`;
+}
+function renderScheduleGrid(dayLessons, visibleDays, weekType) {
+  const dates = getWeekDates(appState.weekOffset);
+  const today = new Date();
+  const isCur = appState.weekOffset === 0;
+  const dN = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'];
+  let html = '';
+  const cols = visibleDays.length || 1;
+  $('scheduleGrid').style.gridTemplateColumns = window.innerWidth <= 768 ? '1fr' : `repeat(${cols}, 1fr)`;
+  let ai = 0;
+  for (const i of visibleDays) {
+    const date = dates[i];
+    const isT = isCur && date.toDateString() === today.toDateString();
+    const isW = i === 6;
+    const all = dayLessons[i] || [];
+    const filtered = all.filter(applySearchFilter);
+    const lessonsHtml = filtered.length === 0
+      ? '<div style="text-align:center;color:#999;padding:10px;">—</div>'
+      : filtered.map(l => renderLessonItem(l, i, weekType, all, ai++)).join('');
+    const dayClass = `day-column ${isT ? 'today' : ''} ${isW ? 'weekend' : ''}`;
+    html += `<div class="${dayClass}" style="animation-delay:${(i * 0.05).toFixed(2)}s"><div class="day-header">${dN[i]} <span style="font-size:.75rem;font-weight:400;">${formatDate(date)}</span></div>${lessonsHtml}</div>`;
+  }
+  $('scheduleGrid').innerHTML = html;
+}
+function attachLessonClickHandlers() {
+  document.querySelectorAll('.lesson-item').forEach(el => {
+    el.addEventListener('click', () => openLessonEditModal(el.dataset.day, el.dataset.lesson, el.dataset.week));
+  });
+}
+function updateSchedule() {
+  if (!scheduleData[appState.selectedGroup]) return;
+  const weekType = getWeekType();
+  const academicWeek = getAcademicWeek() + appState.weekOffset;
+  updateWeekBadges(weekType, academicWeek);
+  const dayLessons = collectDayLessons(weekType);
+  const visibleDays = getVisibleDays(dayLessons);
+  renderScheduleGrid(dayLessons, visibleDays, weekType);
+  updateWeekRange();
+  attachLessonClickHandlers();
+}
+
+/* ============================================================
+   ГРУППЫ
+   ============================================================ */
+function populateGroupSelect() {
+  const c = $('courseSelect').value;
+  $('groupSelect').innerHTML = '';
+  const groups = Object.keys(scheduleData).filter(g => scheduleData[g].course === parseInt(c));
+  if (groups.length === 0) {
+    $('groupSelect').innerHTML = '<option>Нет групп</option>';
+    $('groupSelect').disabled = true;
+  } else {
+    $('groupSelect').disabled = false;
+    groups.forEach(g => { const o = document.createElement('option'); o.value = g; o.textContent = g; $('groupSelect').appendChild(o); });
+    if (groups.includes(appState.selectedGroup)) $('groupSelect').value = appState.selectedGroup;
+    else {
+      appState.selectedGroup = groups[0];
+      $('groupSelect').value = appState.selectedGroup;
+      localStorage.setItem(groupKey, appState.selectedGroup);
+    }
+  }
+  updateHeaderGroup();
+  updateTeacherFilter();
+  updateSchedule();
+  updateStats();
+}
+function updateHeaderGroup() {
+  let el = document.querySelector('.group-info');
+  if (!el) { el = document.createElement('div'); el.className = 'group-info'; document.querySelector('.app-header').insertBefore(el, document.querySelector('.group-selector')); }
+  el.textContent = `Группа ${appState.selectedGroup}`;
+}
+function updateTeacherFilter() {
+  $('teacherFilter').innerHTML = '<option value="">Все преподаватели</option>';
+  if (!scheduleData[appState.selectedGroup]) return;
+  const t = new Set();
+  scheduleData[appState.selectedGroup].schedule.forEach(d => [...(d.upper || []), ...(d.lower || [])].forEach(l => { if (l.teacher && l.teacher !== '—') t.add(l.teacher); }));
+  t.forEach(x => { const o = document.createElement('option'); o.value = x; o.textContent = x; $('teacherFilter').appendChild(o); });
+  if (!t.has(appState.selectedTeacher)) appState.selectedTeacher = '';
+}
+
+/* ============================================================
+   ТЕМА
+   ============================================================ */
+function updateThemeButton() { $('themeToggle').textContent = document.body.classList.contains('dark-theme') ? '☀️' : '🌓'; }
+function toggleTheme() {
+  document.body.classList.toggle('dark-theme');
+  localStorage.setItem(themeKey, document.body.classList.contains('dark-theme') ? 'dark' : 'light');
+  updateThemeButton();
+  if (document.body.classList.contains('dark-theme')) unlockAchievement('dark_side');
+}
+
+/* ============================================================
+   НАВИГАЦИЯ
+   ============================================================ */
+function switchTab(tab) {
+  appState.currentTab = tab;
+  tabLinks.forEach(l => l.classList.toggle('active', l.dataset.tab === tab));
+  tabContents.forEach(c => c.classList.toggle('active', c.id === `tab-${tab}`));
+  const visited = new Set(JSON.parse(sessionStorage.getItem('pti_tabs_today') || '[]'));
+  visited.add(tab);
+  sessionStorage.setItem('pti_tabs_today', JSON.stringify([...visited]));
+  if (visited.size >= 5) unlockAchievement('explorer');
+  if (tab === 'map') { unlockAchievement('map_user'); setTimeout(initYandexMap, 100); }
+  if (tab === 'now') { updateNowTab(); updateStats(); }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* ============================================================
+   РЕДАКТИРОВАНИЕ ЗАНЯТИЯ
+   ============================================================ */
+function openLessonEditModal(di, li, wt) {
+  const d = scheduleData[appState.selectedGroup].schedule[di];
+  if (!d || !d[wt]) return;
+  const l = d[wt][li];
+  if (!l) return;
+  $('editTime').value = l.time || ''; $('editType').value = l.type || '';
+  $('editSubject').value = l.subject || ''; $('editTeacher').value = l.teacher || '';
+  $('editRoom').value = l.room || ''; $('editNote').value = l.note || '';
+  $('editIsReplacement').checked = l.isReplacement || false;
+  $('editDayIndex').value = di; $('editLessonIndex').value = li; $('editWeekType').value = wt;
+  $('lessonEditModal').classList.add('active');
+}
+function saveLessonEdit() {
+  const di = parseInt($('editDayIndex').value);
+  const li = parseInt($('editLessonIndex').value);
+  const wt = $('editWeekType').value;
+  const data = { time: $('editTime').value.trim(), type: $('editType').value.trim(), subject: $('editSubject').value.trim(), teacher: $('editTeacher').value.trim(), room: $('editRoom').value.trim(), note: $('editNote').value.trim(), isReplacement: $('editIsReplacement').checked };
+  const day = scheduleData[appState.selectedGroup].schedule[di];
+  if (!day[wt]) day[wt] = [];
+  day[wt][li] = { ...day[wt][li], ...data };
+  let edits = {};
+  try { edits = JSON.parse(localStorage.getItem(editsStorageKey) || '{}'); } catch(e) {}
+  edits[`${appState.selectedGroup}|${wt}|${di}|${li}`] = data;
+  localStorage.setItem(editsStorageKey, JSON.stringify(edits));
+  $('lessonEditModal').classList.remove('active');
+  unlockAchievement('editor');
+  updateSchedule();
+}
+function addLessonToGoogleCalendar() {
+  const di = parseInt($('editDayIndex').value);
+  const wt = $('editWeekType').value;
+  const li = parseInt($('editLessonIndex').value);
+  const lesson = scheduleData[appState.selectedGroup].schedule[di]?.[wt]?.[li];
+  if (!lesson) return;
+  const dates = getWeekDates(0);
+  const date = dates[di];
+  const [s, e] = lesson.time.split('-').map(t => t.trim());
+  const [sh, sm] = s.split(':').map(Number);
+  const [eh, em] = e.split(':').map(Number);
+  const start = new Date(date); start.setHours(sh, sm, 0, 0);
+  const end = new Date(date); end.setHours(eh, em, 0, 0);
+  const f = x => x.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
+  const params = new URLSearchParams({
+    action: 'TEMPLATE',
+    text: `${lesson.subject}${lesson.type ? ' (' + lesson.type + ')' : ''}`,
+    dates: `${f(start)}/${f(end)}`,
+    details: `${lesson.teacher}${lesson.note ? '\n' + lesson.note : ''}`,
+    location: lesson.room ? `Ауд. ${lesson.room}, ПТИ НовГУ` : 'ПТИ НовГУ',
+    ctz: 'Europe/Moscow'
+  });
+  window.open(`https://calendar.google.com/calendar/render?${params.toString()}`, '_blank');
+  unlockAchievement('gcal_user');
+}
+
+/* ============================================================
+   ЭКСПОРТ
+   ============================================================ */
+async function exportScheduleToPng() {
+  try {
+    if (!window.html2canvas) {
+      await new Promise((res, rej) => {
+        const s = document.createElement('script');
+        s.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+        s.onload = res; s.onerror = rej;
+        document.head.appendChild(s);
+      });
+    }
+    const c = document.querySelector('.schedule-container');
+    const canvas = await html2canvas(c);
+    const a = document.createElement('a');
+    a.download = `schedule_${appState.selectedGroup}.png`;
+    a.href = canvas.toDataURL('image/png');
+    a.click();
+    unlockAchievement('exporter');
+  } catch(e) { alert('Не удалось'); }
+}
+function exportScheduleToIcal() {
+  const wt = getWeekType();
+  const dates = getWeekDates(appState.weekOffset);
+  const sch = scheduleData[appState.selectedGroup].schedule;
+  let ics = 'BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//PTI//RU\n';
+  for (let d = 0; d < 7; d++) {
+    const date = dates[d];
+    (sch[d][wt] || []).filter(applyPeriodFilter).forEach(l => {
+      const [s, e] = l.time.split('-').map(t => t.trim());
+      if (!s || !e) return;
+      const [sh, sm] = s.split(':').map(Number);
+      const [eh, em] = e.split(':').map(Number);
+      const sd = new Date(date); sd.setHours(sh, sm, 0);
+      const ed = new Date(date); ed.setHours(eh, em, 0);
+      const f = x => x.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
+      ics += `BEGIN:VEVENT\nDTSTART:${f(sd)}\nDTEND:${f(ed)}\nSUMMARY:${l.subject}\nDESCRIPTION:${l.teacher}\nLOCATION:${l.room || ''}\nEND:VEVENT\n`;
+    });
+  }
+  ics += 'END:VCALENDAR';
+  const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `schedule_${appState.selectedGroup}.ics`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+  unlockAchievement('ical_master');
+}
+
+/* ============================================================
+   ПОГОДА
+   ============================================================ */
+async function loadWeather() {
+  const w = $('weatherWidget');
+  if (!w) return;
+  const cached = sessionStorage.getItem('pti_weather');
+  if (cached) {
+    try {
+      const d = JSON.parse(cached);
+      if (Date.now() - d.ts < 30 * 60 * 1000) { renderWeather(d); return; }
+    } catch(e) {}
+  }
+  w.classList.add('loading');
+  try {
+    const base = 'https://api.open-meteo.com/v1/forecast?latitude=58.521&longitude=31.271&current_weather=true&timezone=Europe%2FMoscow&models=';
+    const [icon, gfs, ecmwf] = await Promise.all([
+      fetch(base + 'icon_seamless').then(r => r.json()),
+      fetch(base + 'gfs_seamless').then(r => r.json()),
+      fetch(base + 'ecmwf_ifs04').then(r => r.json())
+    ]);
+    const payload = {
+      ts: Date.now(),
+      icon: { temp: Math.round(icon.current_weather.temperature), code: icon.current_weather.weathercode },
+      gfs: { temp: Math.round(gfs.current_weather.temperature), code: gfs.current_weather.weathercode },
+      ecmwf: { temp: Math.round(ecmwf.current_weather.temperature), code: ecmwf.current_weather.weathercode }
+    };
+    payload.avg = Math.round((payload.icon.temp + payload.gfs.temp + payload.ecmwf.temp) / 3);
+    sessionStorage.setItem('pti_weather', JSON.stringify(payload));
+    renderWeather(payload);
+  } catch(e) {
+    console.warn('Погода:', e);
+    $('weatherIcon').textContent = '—';
+    $('weatherTemp').textContent = '--°';
+  }
+  w.classList.remove('loading');
+}
+function weatherEmoji(code) {
+  if (code === 0) return '☀️';
+  if (code <= 2) return '🌤';
+  if (code === 3) return '☁️';
+  if (code === 45 || code === 48) return '🌫';
+  if (code >= 51 && code <= 57) return '🌦';
+  if (code >= 61 && code <= 67) return '🌧';
+  if (code >= 71 && code <= 77) return '❄️';
+  if (code >= 80 && code <= 82) return '🌧';
+  if (code === 85 || code === 86) return '🌨';
+  if (code >= 95) return '⛈';
+  return '🌡';
+}
+function weatherType(code) {
+  if (code <= 1) return 'clear';
+  if (code <= 3) return 'cloudy';
+  if (code >= 45 && code <= 48) return 'fog';
+  if (code >= 51 && code <= 67) return 'rain';
+  if (code >= 71 && code <= 77) return 'snow';
+  if (code >= 80 && code <= 82) return 'rain';
+  if (code === 85 || code === 86) return 'snow';
+  if (code >= 95) return 'storm';
+  return 'other';
+}
+function modeCode(arr) {
+  const c = {};
+  arr.forEach(x => c[x] = (c[x] || 0) + 1);
+  let max = 0, best = arr[0];
+  for (const k in c) if (c[k] > max) { max = c[k]; best = parseInt(k); }
+  return best;
+}
+function renderWeather(d) {
+  const avgCode = modeCode([d.icon.code, d.gfs.code, d.ecmwf.code]);
+  $('weatherIcon').textContent = weatherEmoji(avgCode);
+  $('weatherTemp').textContent = `${d.avg}°`;
+  window._weatherData = d;
+}
+function openWeatherModal() {
+  const d = window._weatherData;
+  if (!d) { alert('Погода ещё загружается'); return; }
+  const c = $('weatherModelsContent');
+  const avgCode = modeCode([d.icon.code, d.gfs.code, d.ecmwf.code]);
+  const types = [weatherType(d.icon.code), weatherType(d.gfs.code), weatherType(d.ecmwf.code)];
+  const tc = {};
+  types.forEach(t => tc[t] = (tc[t] || 0) + 1);
+  const agreement = Math.round((Math.max(...Object.values(tc)) / 3) * 100);
+  const aCls = agreement === 100 ? 'high' : agreement >= 66 ? 'medium' : 'low';
+  const aTxt = agreement === 100 ? '✅ Все три модели согласны' : agreement >= 66 ? '⚠️ Модели частично расходятся' : '❗ Модели сильно расходятся';
+  const time = new Date(d.ts).toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+  c.innerHTML = `
+    <div class="weather-model-row"><div class="weather-model-name">ICON <span class="text-muted" style="font-weight:400;font-size:.75rem;">(DWD)</span></div><div class="weather-model-temp">${d.icon.temp}°</div><div class="weather-model-icon">${weatherEmoji(d.icon.code)}</div></div>
+    <div class="weather-model-row"><div class="weather-model-name">GFS <span class="text-muted" style="font-weight:400;font-size:.75rem;">(NOAA)</span></div><div class="weather-model-temp">${d.gfs.temp}°</div><div class="weather-model-icon">${weatherEmoji(d.gfs.code)}</div></div>
+    <div class="weather-model-row"><div class="weather-model-name">ECMWF <span class="text-muted" style="font-weight:400;font-size:.75rem;">(ЕС)</span></div><div class="weather-model-temp">${d.ecmwf.temp}°</div><div class="weather-model-icon">${weatherEmoji(d.ecmwf.code)}</div></div>
+    <div class="weather-avg-row"><div>Среднее</div><div style="font-size:1.4rem;">${d.avg}°</div><div style="font-size:1.8rem;">${weatherEmoji(avgCode)}</div></div>
+    <div class="weather-agreement ${aCls}">${aTxt} · ${agreement}%</div>
+    <div class="weather-source">Open-Meteo · обновлено в ${time}</div>`;
+  $('weatherModal').classList.add('active');
+  unlockAchievement('weather_user');
+}
+
+/* ============================================================
+   КВИЗ
+   ============================================================ */
+function setupQuiz() { renderQuizQuestion(); }
+function renderQuizQuestion() {
+  if (appState.quizCurrentQuestion >= quizQuestions.length) { showQuizResult(); return; }
+  const q = quizQuestions[appState.quizCurrentQuestion];
+  let h = `<div class="question-block"><div class="question-text">${appState.quizCurrentQuestion + 1}. ${escapeHTML(q.question)}</div><div class="answers">`;
+  q.options.forEach((o, i) => { h += `<label class="answer-option" style="animation-delay:${i * 0.06}s"><input type="radio" name="quiz" value="${i}">${escapeHTML(o.text)}</label>`; });
+  h += `</div></div>`;
+  if (appState.quizCurrentQuestion < quizQuestions.length - 1) h += `<button class="quiz-button" onclick="nextQuestion()">Далее</button>`;
+  else h += `<button class="quiz-button" onclick="finishQuiz()">Узнать результат</button>`;
+  $('quizArea').innerHTML = h;
+}
+function nextQuestion() {
+  const s = document.querySelector('input[name="quiz"]:checked');
+  if (!s) { alert('Выберите вариант'); return; }
+  appState.quizAnswers.push(parseInt(s.value));
+  appState.quizCurrentQuestion++;
+  renderQuizQuestion();
+}
+function finishQuiz() {
+  const s = document.querySelector('input[name="quiz"]:checked');
+  if (!s) { alert('Выберите вариант'); return; }
+  appState.quizAnswers.push(parseInt(s.value));
+  appState.quizCurrentQuestion++;
+  unlockAchievement('quiz_master');
+  showQuizResult();
+}
+function showQuizResult() {
+  const sc = {};
+  digitalPrograms.forEach(p => sc[p.id] = 0);
+  quizQuestions.forEach((q, i) => {
+    const a = q.options[appState.quizAnswers[i]];
+    if (a && a.weights) for (const p in a.weights) sc[p] += a.weights[p];
+  });
+  let best, max = -1;
+  for (const p in sc) if (sc[p] > max) { max = sc[p]; best = p; }
+  const bp = digitalPrograms.find(p => p.id === best);
+  $('quizArea').style.display = 'none';
+  $('quizResult').style.display = 'block';
+  $('quizResult').innerHTML = `<div class="result-card"><h3 style="color:var(--primary);">Рекомендуем:</h3><h2 style="margin:var(--space-sm) 0;">${escapeHTML(bp.name)}</h2><p>${escapeHTML(bp.desc)}</p><p style="margin-top:var(--space-md);"><strong>Контакты:</strong><br>Каб. ${escapeHTML(digitalContacts.room)}<br>${escapeHTML(digitalContacts.address)}<br>${escapeHTML(digitalContacts.email)}</p><hr style="margin:var(--space-lg) 0;"><div class="save-result-form"><input type="text" id="saveName" placeholder="Ваше имя"><button class="quiz-button" onclick="saveQuizResult('${escapeHTML(bp.id)}')">Сохранить</button></div><div id="historyList" style="margin-top:var(--space-lg);"></div><hr style="margin:var(--space-lg) 0;"><button class="quiz-button" onclick="resetQuiz()">Пройти заново</button></div>`;
+  updateHistoryList();
+}
+function saveQuizResult(pid) {
+  const n = $('saveName').value.trim();
+  if (!n) { alert('Введите имя'); return; }
+  const p = digitalPrograms.find(x => x.id === pid);
+  let r = [];
+  try { r = JSON.parse(localStorage.getItem(savedResultsKey) || '[]'); } catch(e) {}
+  r.push({ name: n, program: p.name, date: new Date().toLocaleString('ru-RU') });
+  localStorage.setItem(savedResultsKey, JSON.stringify(r));
+  updateHistoryList();
+  alert('Сохранено!');
+}
+function updateHistoryList() {
+  const c = $('historyList');
+  if (!c) return;
+  let r = [];
+  try { r = JSON.parse(localStorage.getItem(savedResultsKey) || '[]'); } catch(e) {}
+  if (r.length === 0) { c.innerHTML = '<p class="text-muted">Нет результатов</p>'; return; }
+  c.innerHTML = '<ul class="history-list">' + r.map(x => `<li><strong>${escapeHTML(x.name)}</strong> — ${escapeHTML(x.program)}<br><small>${escapeHTML(x.date)}</small></li>`).join('') + '</ul>';
+}
+function resetQuiz() {
+  appState.quizAnswers = [];
+  appState.quizCurrentQuestion = 0;
+  $('quizArea').style.display = 'block';
+  $('quizResult').style.display = 'none';
+  renderQuizQuestion();
+}
+window.nextQuestion = nextQuestion;
+window.finishQuiz = finishQuiz;
+window.resetQuiz = resetQuiz;
+window.saveQuizResult = saveQuizResult;
+
+/* ============================================================
+   КАРТА
+   ============================================================ */
+function initYandexMap() {
+  if (typeof ymaps === 'undefined') return;
+  ymaps.ready(() => {
+    const map = new ymaps.Map('yandexMap', { center: [58.521, 31.271], zoom: 13, controls: ['zoomControl', 'fullscreenControl'] });
+    [
+      { c: [58.521, 31.271], n: '🏛 Главный корпус ПТИ', a: 'ул. Б. Санкт-Петербургская, 41' },
+      { c: [58.522, 31.272], n: '🔬 Учебно-лабораторный', a: 'ул. Б. Санкт-Петербургская, 46' }
+    ].forEach(b => map.geoObjects.add(new ymaps.Placemark(b.c, { balloonContentHeader: b.n, balloonContentBody: b.a }, { preset: 'islands#blueIcon' })));
+    map.geoObjects.add(new ymaps.Placemark([58.525, 31.280], { balloonContentHeader: '🏠 Общежитие', balloonContentBody: 'ул. Студенческая, 5' }, { preset: 'islands#yellowIcon' }));
+  });
+}
+
+/* ============================================================
+   СТУДЕНЧЕСКАЯ ЖИЗНЬ
+   ============================================================ */
+function renderStudentLife() {
+  const container = $('studentLifeContent');
+  if (!container) return;
+  let html = '<div class="club-grid">';
+  studentClubs.forEach((club, i) => {
+    html += `<a class="club-card ${club.category}" href="${escapeHTML(club.url)}" target="_blank" rel="noopener" style="animation-delay:${i * 0.06}s"><div class="club-icon">${club.icon}</div><div class="club-info"><div class="club-name">${escapeHTML(club.name)}</div><div class="club-desc">${escapeHTML(club.desc)}</div><div class="club-tag">${escapeHTML(club.tag)}</div></div></a>`;
+  });
+  html += '</div>';
+  container.innerHTML = html;
+}
+
+/* ============================================================
+   ИИ-ПОМОЩНИК (локальный парсер)
+   ============================================================ */
+   function tryLocalQuery(q) {
+  q = q.toLowerCase();
+  const now = new Date();
+  const dN = ['воскресенье', 'понедельник', 'вторник', 'среда', 'четверг', 'пятница', 'суббота'];
+  const dF = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'];
+  
+  function getWeekTypeString() {
+    const currentType = typeof getWeekType === 'function' ? getWeekType() : 'upper';
+    return currentType === 'upper' ? 'верхняя' : 'нижняя';
+  }
+
+  // Проверка недели
+  if (q.includes('неделя') || q.includes('неделе')) {
+    return `Сейчас идет ${getWeekTypeString()} неделя.`;
+  }
+
+  let td = null;
+  if (q.includes('сегодня')) td = now.getDay();
+  else if (q.includes('завтра')) td = (now.getDay() + 1) % 7;
+  else if (q.includes('послезавтра')) td = (now.getDay() + 2) % 7;
+  else {
+    for (let i = 0; i < 7; i++) {
+      if (q.includes(dN[i])) { td = i; break; }
+    }
+  }
+
+  if (td === null && (q.includes('сейчас') || q.includes('пара') || q.includes('пары'))) {
+    td = now.getDay();
+  }
+
+  if (td !== null) {
+    const di = td === 0 ? 6 : td - 1;
+    const weekType = typeof getWeekType === 'function' ? getWeekType() : 'upper';
+    const ls = (scheduledData[appState.selectedGroup]?.schedule[di]?.[weekType] || []).filter(applyPeriodFilter);
+    
+    if (ls.length === 0) return `В ${dF[di].toLowerCase()} у тебя нет пар ☕`;
+    
+    let res = `Расписание на ${dF[di].toLowerCase()}:\n`;
+    ls.forEach(p => {
+      res += `• ${p.time} — ${p.subject} (ауд. ${p.room})\n`;
+    });
+    return res;
+  }
+
+  return null;
+}
+
+async function askAI(msg) {
+  // Локальный бот сразу берет ответ из базы данных выше
+  const local = tryLocalQuery(msg);
+  if (local) return local;
+  return 'Не могу ответить на этот вопрос. Спросите про расписание: «Что завтра?», «Когда физика?», «Какая сейчас неделя?»';
+}
+
+
+function addChatMsg(text, who) {
+  const c = $('chatMessages');
+  const d = document.createElement('div');
+  d.className = `chat-message ${who}`;
+  d.textContent = text;
+  c.appendChild(d);
+  c.scrollTop = c.scrollHeight;
+  return d;
+}
+async function handleSendChat() {
+  const inp = $('chatInput');
+  const t = inp.value.trim();
+  if (!t) return;
+  addChatMsg(t, 'user');
+  inp.value = '';
+  const th = addChatMsg('Думаю...', 'bot');
+  const ans = await askAI(t);
+  th.remove();
+  addChatMsg(ans, 'bot');
+}
+
+/* ============================================================
+   ГОЛОС
+   ============================================================ */
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+const synth = window.speechSynthesis;
+let recognition = null, isListening = false;
+
+function initVoice() {
+  const vb = $('voiceBtn');
+  if (!SR) { vb.disabled = true; vb.textContent = '🎤 N/A'; return; }
+  vb.addEventListener('click', startVoice);
+  $('voiceClose').addEventListener('click', closeVoice);
+  $('voiceOverlay').addEventListener('click', e => { if (e.target === $('voiceOverlay')) closeVoice(); });
+  $('voicePulse').addEventListener('click', () => { if (!isListening) startListening(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && $('voiceOverlay').classList.contains('active')) closeVoice(); });
+  if (synth) synth.onvoiceschanged = () => synth.getVoices();
+}
+function startVoice() {
+  $('voiceOverlay').classList.add('active');
+  $('voiceTranscript').textContent = 'Говорите...';
+  $('voiceHint').textContent = 'Например: «Что у меня завтра?»';
+  $('voiceAnswer').style.display = 'none';
+  $('voiceAnswer').textContent = '';
+  startListening();
+}
+function closeVoice() {
+  if (recognition) try { recognition.stop(); } catch(e) {}
+  if (synth) synth.cancel();
+  $('voiceOverlay').classList.remove('active');
+  isListening = false;
+}
+function startListening() {
+  if (!SR || isListening) return;
+  recognition = new SR();
+  recognition.lang = 'ru-RU';
+  recognition.continuous = false;
+  recognition.interimResults = true;
+  recognition.onstart = () => { isListening = true; $('voicePulse').textContent = '🎙'; };
+  recognition.onresult = e => {
+    let fin = '', int = '';
+    for (let i = e.resultIndex; i < e.results.length; i++) {
+      const t = e.results[i][0].transcript;
+      if (e.results[i].isFinal) fin += t;
+      else int += t;
+    }
+    $('voiceTranscript').textContent = fin || int;
+    if (fin) processVoiceQuery(fin.trim());
+  };
+  recognition.onerror = e => { console.error(e); $('voiceTranscript').textContent = 'Не удалось распознать.'; isListening = false; $('voicePulse').textContent = '🎤'; };
+  recognition.onend = () => { isListening = false; $('voicePulse').textContent = '🎤'; };
+  try { recognition.start(); } catch(e) {}
+}
+async function processVoiceQuery(q) {
+  $('voiceHint').textContent = 'Думаю...';
+  $('voicePulse').textContent = '🤔';
+  const ans = await askAI(q);
+  $('voiceTranscript').textContent = `«${q}»`;
+  $('voiceAnswer').textContent = ans;
+  $('voiceAnswer').style.display = 'block';
+  $('voiceHint').textContent = 'Нажмите на микрофон, чтобы спросить ещё';
+  $('voicePulse').textContent = '🔊';
+  speak(ans);
+  if (incCounter('voice_count') >= 10) unlockAchievement('voice_guru');
+  unlockAchievement('voice_user');
+}
+function speak(text) {
+  if (!synth) return;
+  synth.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'ru-RU';
+  u.rate = 1.05;
+  const vs = synth.getVoices();
+  const ru = vs.find(v => v.lang.startsWith('ru'));
+  if (ru) u.voice = ru;
+  synth.speak(u);
+}
+
+/* ============================================================
+   УВЕДОМЛЕНИЯ
+   ============================================================ */
+function notificationsSupported() { return 'Notification' in window && 'serviceWorker' in navigator; }
+function renderNotificationsBlock() {
+  const c = $('notifContent');
+  if (!c) return;
+  if (!notificationsSupported()) {
+    c.innerHTML = `<div class="notif-status"><span class="notif-status-icon">🚫</span><div class="notif-status-text"><div class="notif-status-title">Не поддерживается</div><div class="notif-status-desc">Ваш браузер не поддерживает уведомления</div></div></div>`;
+    return;
+  }
+  const permission = Notification.permission;
+  const enabled = localStorage.getItem(NOTIF_ENABLED_KEY) === 'true' && permission === 'granted';
+  let icon, title, desc, btnText, btnClass, btnDisabled = false;
+  if (permission === 'denied') {
+    icon = '🚫'; title = 'Уведомления заблокированы'; desc = 'Разрешите в настройках браузера'; btnText = 'Заблокировано'; btnClass = ''; btnDisabled = true;
+  } else if (enabled) {
+    icon = '🔔'; title = 'Уведомления включены'; desc = `Напомню за ${NOTIF_MINUTES_BEFORE} мин до пары`; btnText = '🔕 Выключить'; btnClass = 'active';
+  } else {
+    icon = '🔕'; title = 'Уведомления выключены'; desc = `Напоминания за ${NOTIF_MINUTES_BEFORE} минут`; btnText = '🔔 Включить'; btnClass = '';
+  }
+  c.innerHTML = `<div class="notif-status"><span class="notif-status-icon">${icon}</span><div class="notif-status-text"><div class="notif-status-title">${title}</div><div class="notif-status-desc">${desc}</div></div><button class="notif-toggle ${btnClass}" id="notifToggleBtn" ${btnDisabled ? 'disabled' : ''}>${btnText}</button></div><div class="notif-hint">💡 Уведомления приходят, пока портал открыт в браузере</div><div class="notif-list" id="notifUpcomingList"></div>`;
+  const btn = $('notifToggleBtn');
+  if (btn && !btnDisabled) btn.addEventListener('click', toggleNotifications);
+  renderUpcomingNotifications();
+}
+async function toggleNotifications() {
+  const enabled = localStorage.getItem(NOTIF_ENABLED_KEY) === 'true';
+  if (enabled) {
+    localStorage.setItem(NOTIF_ENABLED_KEY, 'false');
+    if (notificationTimer) clearInterval(notificationTimer);
+    notificationTimer = null;
+    renderNotificationsBlock();
+    return;
+  }
+  try {
+    const permission = await Notification.requestPermission();
+    if (permission === 'granted') {
+      localStorage.setItem(NOTIF_ENABLED_KEY, 'true');
+      startNotificationScheduler();
+      renderNotificationsBlock();
+      setTimeout(() => {
+        if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+          navigator.serviceWorker.controller.postMessage({ type: 'SHOW_NOTIFICATION', title: '🔔 Уведомления включены!', body: 'Я напомню за 15 минут до пары', tag: 'test' });
+        }
+      }, 500);
+      unlockAchievement('notif_master');
+    } else {
+      alert('Вы отклонили уведомления.');
+    }
+  } catch(e) { alert('Не удалось запросить разрешение'); }
+}
+function startNotificationScheduler() {
+  if (notificationTimer) clearInterval(notificationTimer);
+  checkAndNotify();
+  notificationTimer = setInterval(checkAndNotify, 60000);
+}
+async function checkAndNotify() {
+  if (localStorage.getItem(NOTIF_ENABLED_KEY) !== 'true') return;
+  if (Notification.permission !== 'granted') return;
+  const now = new Date();
+  const di = now.getDay() === 0 ? 6 : now.getDay() - 1;
+  if (!scheduleData[appState.selectedGroup]) return;
+  const wt = getWeekType();
+  const ls = (scheduleData[appState.selectedGroup].schedule[di]?.[wt] || []).filter(applyPeriodFilter);
+  for (const l of ls) {
+    const [h, m] = l.time.split('-')[0].trim().split(':').map(Number);
+    const start = new Date(now);
+    start.setHours(h, m, 0, 0);
+    const diff = Math.round((start - now) / 60000);
+    if (diff === NOTIF_MINUTES_BEFORE) {
+      const key = new Date().toISOString().slice(0, 10) + '_' + l.time + '_' + l.subject;
+      if (notifiedLessons.has(key)) continue;
+      notifiedLessons.add(key);
+      const title = `⏰ Через ${NOTIF_MINUTES_BEFORE} мин — пара`;
+      const body = `${l.subject}\nАуд. ${l.room || '—'} · ${l.teacher}`;
+      if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+        navigator.serviceWorker.controller.postMessage({ type: 'SHOW_NOTIFICATION', title, body, tag: key });
+      } else {
+        new Notification(title, { body, icon: './icon-192.svg', tag: key });
+      }
+    }
+  }
+}
+function renderUpcomingNotifications() {
+  const c = $('notifUpcomingList');
+  if (!c) return;
+  const now = new Date();
+  const di = now.getDay() === 0 ? 6 : now.getDay() - 1;
+  if (!scheduleData[appState.selectedGroup]) return;
+  const wt = getWeekType();
+  const ls = (scheduleData[appState.selectedGroup].schedule[di]?.[wt] || [])
+    .filter(applyPeriodFilter)
+    .filter(l => {
+      const [h, m] = l.time.split('-')[0].trim().split(':').map(Number);
+      const s = new Date(now);
+      s.setHours(h, m, 0, 0);
+      return s > now;
+    })
+    .slice(0, 3);
+  if (ls.length === 0) { c.innerHTML = '<p class="text-muted" style="font-size:.85rem;text-align:center;padding:8px;">На сегодня пар больше нет 🎉</p>'; return; }
+  let html = '<h4>Сегодня ещё будет:</h4>';
+  ls.forEach(l => {
+    const [h, m] = l.time.split('-')[0].trim().split(':').map(Number);
+    const s = new Date(now);
+    s.setHours(h, m, 0, 0);
+    const d = Math.round((s - now) / 60000);
+    const when = d < 60 ? `через ${d} мин` : `через ${Math.floor(d / 60)} ч ${d % 60} мин`;
+    html += `<div class="notif-upcoming"><div class="notif-time">${l.time.split('-')[0].trim()}</div><div class="notif-info"><div class="notif-subject">${escapeHTML(l.subject)}</div><div class="notif-room">ауд. ${escapeHTML(l.room || '—')} · ${when}</div></div></div>`;
+  });
+  c.innerHTML = html;
+}
+
+/* ============================================================
+   ДНИ РОЖДЕНИЯ
+   ============================================================ */
+function fillDaySelect() {
+  const s = $('bdayDay');
+  if (!s || s.options.length > 1) return;
+  for (let i = 1; i <= 31; i++) { const o = document.createElement('option'); o.value = i; o.textContent = i; s.appendChild(o); }
+}
+function subscribeToBirthdays() {
+  if (!window.firebaseFns) return;
+  const { db, collection, onSnapshot } = window.firebaseFns;
+  if (appState.unsubscribeBirthdays) appState.unsubscribeBirthdays();
+  appState.unsubscribeBirthdays = onSnapshot(collection(db, 'birthdays'), snap => {
+    const arr = [];
+    snap.forEach(d => { const x = d.data(); arr.push({ id: d.id, name: x.name || 'Аноним', day: x.day, month: x.month }); });
+    renderBirthdays(arr);
+  }, err => { console.warn('BD:', err.message); });
+}
+function renderBirthdays(arr) {
+  const c = $('birthdaysContent');
+  if (!c) return;
+  if (!arr || arr.length === 0) { c.innerHTML = '<p class="text-muted" style="text-align:center;font-size:.9rem;font-style:italic;">Список пуст. Будь первым! 👇</p>'; return; }
+  const now = new Date();
+  const tD = now.getDate(), tM = now.getMonth() + 1;
+  const myUuid = getDeviceUuid();
+  const enriched = arr.map(b => {
+    let next = new Date(now.getFullYear(), b.month - 1, b.day);
+    if (next < new Date(now.getFullYear(), now.getMonth(), now.getDate())) next = new Date(now.getFullYear() + 1, b.month - 1, b.day);
+    const days = Math.round((next - new Date(now.getFullYear(), now.getMonth(), now.getDate())) / 86400000);
+    return { ...b, days, isToday: b.day === tD && b.month === tM, isMine: b.id === myUuid };
+  });
+  enriched.sort((a, b) => { if (a.isMine !== b.isMine) return a.isMine ? -1 : 1; return a.days - b.days; });
+  const today = enriched.filter(b => b.isToday);
+  const up = enriched.filter(b => !b.isToday && b.days <= 60);
+  const mN = ['', 'янв', 'фев', 'мар', 'апр', 'мая', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек'];
+  let html = '';
+  if (today.length) {
+    html += `<div style="margin-bottom:var(--space-lg);">${today.map(b => `<div class="birthday-item today"><span class="bday-icon">🎉</span><div class="bday-info"><div class="bday-name">${escapeHTML(b.name)}${b.isMine ? '<span class="bday-you-badge">ты</span>' : ''}</div><div class="bday-date">Сегодня день рождения!</div></div></div>`).join('')}</div>`;
+  }
+  if (up.length) {
+    html += '<h4 style="margin:var(--space-sm) 0;font-size:.8rem;color:var(--text-medium);text-transform:uppercase;">Ближайшие</h4>';
+    html += up.map((b, i) => `<div class="birthday-item ${b.isMine ? 'mine' : ''}" style="animation-delay:${i * 0.04}s"><span class="bday-icon">🎂</span><div class="bday-info"><div class="bday-name">${escapeHTML(b.name)}${b.isMine ? '<span class="bday-you-badge">ты</span>' : ''}</div><div class="bday-date">${b.day} ${mN[b.month]}</div></div><div class="bday-days">${b.days === 0 ? 'сегодня' : b.days === 1 ? 'завтра' : 'через ' + b.days + ' дн.'}</div></div>`).join('');
+  }
+  if (!today.length && !up.length) html = '<p class="text-muted" style="text-align:center;font-size:.9rem;">В ближайшие 60 дней дней рождения нет 🎈</p>';
+  c.innerHTML = html;
+}
+async function saveBirthday() {
+  const name = $('bdayName').value.trim();
+  const day = parseInt($('bdayDay').value);
+  const month = parseInt($('bdayMonth').value);
+  if (!name || name.length < 2) { alert('Введите имя (минимум 2 символа)'); return; }
+  if (!day || !month) { alert('Выберите день и месяц'); return; }
+  const test = new Date(2024, month - 1, day);
+  if (test.getMonth() !== month - 1) { alert('Такой даты не существует'); return; }
+  if (!window.firebaseFns) { alert('Firebase не загружен'); return; }
+  try {
+    const { db, doc, setDoc, serverTimestamp } = window.firebaseFns;
+    await setDoc(doc(db, 'birthdays', getDeviceUuid()), { name: name, day: day, month: month, updated: serverTimestamp() }, { merge: true });
+    $('bdayName').value = ''; $('bdayDay').value = ''; $('bdayMonth').value = '';
+    $('bdayForm').classList.remove('visible');
+    $('bdayAddToggle').classList.remove('active');
+    $('bdayAddToggle').textContent = '✏️ Изменить мой день рождения';
+    $('bdayDeleteBtn').style.display = 'block';
+    unlockAchievement('bday_congrats');
+  } catch(e) { alert('Не удалось: ' + e.message); }
+}
+async function deleteMyBirthday() {
+  if (!confirm('Удалить?')) return;
+  if (!window.firebaseFns) return;
+  try {
+    const { db, deleteDoc, doc } = window.firebaseFns;
+    await deleteDoc(doc(db, 'birthdays', getDeviceUuid()));
+    $('bdayAddToggle').textContent = '+ Добавить свой день рождения';
+    $('bdayDeleteBtn').style.display = 'none';
+  } catch(e) { alert(e.message); }
+}
+async function loadMyBirthday() {
+  if (!window.firebaseFns) return;
+  try {
+    const { db, doc, getDoc } = window.firebaseFns;
+    const snap = await getDoc(doc(db, 'birthdays', getDeviceUuid()));
+    if (snap.exists()) {
+      const d = snap.data();
+      $('bdayName').value = d.name || '';
+      $('bdayDay').value = d.day || '';
+      $('bdayMonth').value = d.month || '';
+      $('bdayAddToggle').textContent = '✏️ Изменить мой день рождения';
+      $('bdayDeleteBtn').style.display = 'block';
+    }
+  } catch(e) {}
+}
+function initBirthdayForm() {
+  fillDaySelect();
+  $('bdayAddToggle').addEventListener('click', () => {
+    $('bdayForm').classList.toggle('visible');
+    $('bdayAddToggle').classList.toggle('active');
+    if ($('bdayForm').classList.contains('visible')) setTimeout(() => $('bdayName').focus(), 100);
+  });
+  $('bdaySaveBtn').addEventListener('click', saveBirthday);
+  $('bdayDeleteBtn').addEventListener('click', deleteMyBirthday);
+  setTimeout(loadMyBirthday, 1500);
+}
+
+/* ============================================================
+   ОБРАТНАЯ СВЯЗЬ (с cooldown 30 сек)
+   ============================================================ */
+async function sendFeedback() {
+  const btn = $('sendFeedbackBtn');
+  if (btn && btn.disabled) return;
+
+  const t = $('feedbackInput').value.trim();
+  if (!t || t.length < 5) { alert('Слишком короткое сообщение (минимум 5 символов)'); return; }
+  if (t.length > 1000) { alert('Слишком длинное сообщение (максимум 1000)'); return; }
+  if (!window.firebaseFns) { alert('Firebase не загружен'); return; }
+
+  try {
+    const { db, collection, addDoc, serverTimestamp } = window.firebaseFns;
+    await addDoc(collection(db, 'feedback'), {
+      text: t,
+      timestamp: serverTimestamp(),
+      page: appState.currentTab
+    });
+    $('feedbackInput').value = '';
+    unlockAchievement('feedback_hero');
+    startFeedbackCooldown();
+  } catch(e) {
+    alert('Не удалось отправить: ' + e.message);
+  }
+}
+function startFeedbackCooldown() {
+  const btn = $('sendFeedbackBtn');
+  if (!btn) return;
+  btn.disabled = true;
+  btn.style.opacity = '0.6';
+  let cd = FEEDBACK_COOLDOWN;
+  btn.textContent = `✅ Через ${cd}с`;
+  if (feedbackCooldownTimer) clearInterval(feedbackCooldownTimer);
+  feedbackCooldownTimer = setInterval(() => {
+    cd--;
+    if (cd <= 0) {
+      clearInterval(feedbackCooldownTimer);
+      feedbackCooldownTimer = null;
+      btn.disabled = false;
+      btn.style.opacity = '';
+      btn.textContent = 'Отправить';
+    } else {
+      btn.textContent = `✅ Через ${cd}с`;
+    }
+  }, 1000);
+}
+function subscribeToFeedback() {
+  if (!window.firebaseFns) return;
+  const { db, collection, onSnapshot, query, orderBy } = window.firebaseFns;
+  if (appState.unsubscribeFeedback) appState.unsubscribeFeedback();
+  appState.unsubscribeFeedback = onSnapshot(
+    query(collection(db, 'feedback'), orderBy('timestamp', 'desc')),
+    snap => {
+      const arr = [];
+      snap.forEach(d => {
+        const x = d.data();
+        arr.push({ id: d.id, text: x.text || '', ts: x.timestamp?.toMillis() || Date.now(), page: x.page || '—' });
+      });
+      renderFeedback(arr);
+    },
+    err => console.warn('Feedback:', err.message)
+  );
+}
+function renderFeedback(arr) {
+  const wrap = $('feedbackAdminArea');
+  const list = $('feedbackList');
+  if (!wrap || !list) return;
+  if (!appState.isAdmin) { wrap.style.display = 'none'; return; }
+  wrap.style.display = 'block';
+  if (!arr.length) { list.innerHTML = '<p class="text-muted" style="font-size:.9rem;">Пока нет сообщений.</p>'; return; }
+  list.innerHTML = arr.slice(0, 20).map((f, i) => `
+    <div class="feedback-item" style="animation-delay:${i * 0.04}s">
+      <div class="feedback-text">${escapeHTML(f.text)}</div>
+      <div class="feedback-meta">
+        <span class="feedback-page-tag">${escapeHTML(f.page)}</span>
+        <span>${new Date(f.ts).toLocaleString('ru-RU')}</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+/* ============================================================
+   РЕЙТИНГ
+   ============================================================ */
+function getMyNick() { return localStorage.getItem('pti_nickname') || 'Студент'; }
+function setMyNick(nick) { localStorage.setItem('pti_nickname', nick.trim().slice(0, 20) || 'Студент'); syncRating(); loadRating(); }
+async function syncRating() {
+  if (!window.firebaseFns) return;
+  try {
+    const { db, doc, setDoc, serverTimestamp } = window.firebaseFns;
+    const u = getUnlocked();
+    await setDoc(doc(db, 'ratings', getDeviceUuid()), { nick: getMyNick(), score: u.length, updated: serverTimestamp() }, { merge: true });
+  } catch(e) { console.warn('Rating sync:', e.message); }
+}
+async function loadRating() {
+  const c = $('ratingContent');
+  if (!c) return;
+  if (!window.firebaseFns) { c.innerHTML = '<p class="text-muted" style="font-size:.85rem;text-align:center;">Офлайн</p>'; return; }
+  try {
+    const { db, collection, query, orderBy, limit, getDocs } = window.firebaseFns;
+    const q = query(collection(db, 'ratings'), orderBy('score', 'desc'), limit(5));
+    const snap = await getDocs(q);
+    const myUuid = getDeviceUuid();
+    const myScore = getUnlocked().length;
+    let html = '<div class="rating-list">';
+    let i = 0, iAmIn = false;
+    snap.forEach(docSnap => {
+      const d = docSnap.data();
+      i++;
+      const isMe = docSnap.id === myUuid;
+      if (isMe) iAmIn = true;
+      const icon = i === 1 ? '🥇' : i === 2 ? '🥈' : i === 3 ? '🥉' : i;
+      html += `<div class="rating-item top-${i <= 3 ? i : ''} ${isMe ? 'you' : ''}" style="animation-delay:${i * 0.06}s"><div class="rating-place">${icon}</div><div class="rating-nick">${escapeHTML(d.nick || 'Аноним')}${isMe ? ' (ты)' : ''}</div><div class="rating-score">${d.score} 🏅</div></div>`;
+    });
+    html += '</div>';
+    html += `<div class="rating-you"><span>${iAmIn ? 'Ты в топе! 🎉' : 'Твой результат: <strong>' + myScore + '</strong> 🏅'}</span><button class="rating-nick-btn" id="changeNickBtn">${escapeHTML(getMyNick())}</button></div>`;
+    c.innerHTML = html;
+    $('changeNickBtn').addEventListener('click', () => {
+      const n = prompt('Имя в рейтинге:', getMyNick());
+      if (n !== null && n.trim() !== '') setMyNick(n);
+    });
+  } catch(e) {
+    console.warn(e);
+    c.innerHTML = '<p class="text-muted" style="font-size:.85rem;text-align:center;">Рейтинг временно недоступен</p>';
+  }
+}
+
+/* ============================================================
+   FIREBASE
+   ============================================================ */
+function initNotices() {
+  if (!window.firebaseFns) { $('noticeList').innerHTML = '<div class="notice-error">Firebase не загрузился</div>'; return; }
+  subscribeToNotices();
+  subscribeToBirthdays();
+  const { auth, onAuthStateChanged } = window.firebaseFns;
+  onAuthStateChanged(auth, user => {
+    if (user) {
+      appState.isAdmin = true;
+      appState.currentAdminEmail = user.email;
+      $('noticeInputArea').style.display = 'flex';
+      $('adminArea').classList.remove('visible');
+      $('adminToggleLink').textContent = `🚪 Выйти (${user.email})`;
+      unlockAchievement('admin_helper');
+      subscribeToFeedback();
+      loadFeedbackNow();
+    } else {
+      appState.isAdmin = false;
+      appState.currentAdminEmail = '';
+      $('noticeInputArea').style.display = 'none';
+      $('adminToggleLink').textContent = 'Я администратор';
+      if (appState.unsubscribeFeedback) {
+        appState.unsubscribeFeedback();
+        appState.unsubscribeFeedback = null;
+      }
+      const wrap = $('feedbackAdminArea');
+      if (wrap) wrap.style.display = 'none';
+    }
+  });
+}
+async function loadFeedbackNow() {
+  if (!window.firebaseFns) return;
+  try {
+    const { db, collection, query, orderBy, getDocs } = window.firebaseFns;
+    const snap = await getDocs(query(collection(db, 'feedback'), orderBy('timestamp', 'desc')));
+    const arr = [];
+    snap.forEach(d => {
+      const x = d.data();
+      arr.push({ id: d.id, text: x.text || '', ts: x.timestamp?.toMillis() || Date.now(), page: x.page || '—' });
+    });
+    renderFeedback(arr);
+  } catch(e) { console.warn(e); }
+}
+async function loadScheduleFromCloud() {
+  const CACHE_KEY = 'pti_schedule_cache';
+  try {
+    const cached = localStorage.getItem(CACHE_KEY);
+    if (cached) {
+      const data = JSON.parse(cached);
+      Object.assign(scheduleData, data);
+      console.log('[Schedule] Загружено из кэша');
+    }
+  } catch(e) {}
+  if (!window.firebaseFns) return;
+  try {
+    const { db, collection, getDocs } = window.firebaseFns;
+    const snap = await getDocs(collection(db, 'schedules'));
+    if (snap.empty) return;
+    const cloudData = {};
+    snap.forEach(doc => { cloudData[doc.id] = doc.data(); });
+    Object.assign(scheduleData, cloudData);
+    localStorage.setItem(CACHE_KEY, JSON.stringify(cloudData));
+    console.log('[Schedule] Загружено из Firestore:', Object.keys(cloudData));
+    populateGroupSelect();
+    updateSchedule();
+  } catch(e) {
+    console.warn('[Schedule] Firestore недоступен:', e.message);
+  }
+}
+
+async function addNoticeToFirestore() {
+  if (!appState.isAdmin) return;
+  const t = $('noticeInput').value.trim();
+  const urlInput = $('noticeImageUrlInput').value.trim();
+  if (!t) { alert('Введите текст объявления'); return; }
+
+  let imageUrl = null;
+  if (urlInput) {
+    const allowedPattern = /^https:\/\/(firebasestorage\.googleapis\.com|i\.imgur\.com|i\.ibb\.co|sun9-[a-zA-Z0-9-]+\.userapi\.com)\//;
+    if (!allowedPattern.test(urlInput)) {
+      alert('Разрешены картинки только с:\n• i.imgur.com (Imgur)\n• i.ibb.co (ImgBB)\n• sun9-*.userapi.com (VK CDN)\n\nДругие домены база данных отклонит.');
+      return;
+    }
+    imageUrl = urlInput;
+  }
+
+  try {
+    const { db, collection, addDoc, serverTimestamp } = window.firebaseFns;
+    await addDoc(collection(db, 'notices'), {
+      text: t,
+      imageUrl: imageUrl,
+      timestamp: serverTimestamp(),
+      author: appState.currentAdminEmail
+    });
+    $('noticeInput').value = '';
+    $('noticeImageUrlInput').value = '';
+  } catch(e) {
+    if (e.code === 'permission-denied') {
+      alert('Firestore отклонил запрос. Скорее всего, ссылка на картинку не с разрешённого домена.');
+    } else {
+      alert('Ошибка: ' + e.message);
+    }
+  }
+}
+function subscribeToNotices() {
+  const { db, collection, onSnapshot, query, orderBy } = window.firebaseFns;
+  const q = query(collection(db, 'notices'), orderBy('timestamp', 'desc'));
+  if (appState.unsubscribeNotices) appState.unsubscribeNotices();
+  appState.unsubscribeNotices = onSnapshot(q, snap => {
+    const arr = [];
+    snap.forEach(d => {
+      const x = d.data();
+      arr.push({ id: d.id, text: x.text || '', imageUrl: x.imageUrl || null, timestamp: x.timestamp ? x.timestamp.toMillis() : Date.now(), author: x.author || 'Админ' });
+    });
+    renderNotices(arr);
+  }, err => { $('noticeList').innerHTML = `<div class="notice-error">Ошибка: ${escapeHTML(err.message)}</div>`; });
+}
+function renderNotices(arr) {
+  if (!arr.length) { $('noticeList').innerHTML = '<p class="text-muted" style="text-align:center;">Объявлений нет</p>'; return; }
+  $('noticeList').innerHTML = arr.map((n, i) => `<div class="notice-card" data-id="${escapeHTML(n.id)}" style="animation-delay:${i * 0.08}s"><div class="notice-text">${n.imageUrl ? `<img src="${escapeHTML(n.imageUrl)}" alt="" loading="lazy" onerror="this.style.display='none'">` : ''}<div>${escapeHTML(n.text)}</div><div class="notice-date">${new Date(n.timestamp).toLocaleString('ru-RU')} · ${escapeHTML(n.author)}</div></div>${appState.isAdmin ? '<button class="notice-delete">✕</button>' : ''}</div>`).join('');
+}
+async function deleteNotice(id) {
+  if (!appState.isAdmin || !confirm('Удалить?')) return;
+  try {
+    const { db, deleteDoc, doc, storage, storageRef, deleteObject, getDoc } = window.firebaseFns;
+
+    const snap = await getDoc(doc(db, 'notices', id));
+    if (snap.exists()) {
+      const data = snap.data();
+      if (data.imageUrl) {
+        try {
+          const url = new URL(data.imageUrl);
+          const match = url.pathname.match(/\/o\/(.+?)(\?|$)/);
+          if (match) {
+            const path = decodeURIComponent(match[1]);
+            const r = storageRef(storage, path);
+            await deleteObject(r);
+            console.log('[Storage] Картинка удалена:', path);
+          }
+        } catch(storageErr) {
+          console.warn('[Storage] Не удалось удалить картинку:', storageErr.message);
+        }
+      }
+    }
+
+    await deleteDoc(doc(db, 'notices', id));
+  } catch(e) { alert(e.message); }
+}
+function toggleAdminPanel() {
+  if (appState.isAdmin) {
+    const { auth, signOut } = window.firebaseFns;
+    signOut(auth);
+  } else {
+    $('adminArea').classList.toggle('visible');
+    if ($('adminArea').classList.contains('visible')) $('adminEmail').focus();
+  }
+}
+async function tryAdminLogin() {
+  const em = $('adminEmail').value.trim(), pw = $('adminPassword').value;
+  if (!em || !pw) { alert('Введите email и пароль'); return; }
+  if (!window.firebaseFns) { alert('Firebase не загружен'); return; }
+  try {
+    const { auth, signInWithEmailAndPassword } = window.firebaseFns;
+    await signInWithEmailAndPassword(auth, em, pw);
+    $('adminEmail').value = ''; $('adminPassword').value = '';
+  } catch(e) {
+    let m = 'Ошибка';
+    if (e.code === 'auth/invalid-credential') m = 'Неверный email или пароль';
+    else if (e.code === 'auth/network-request-failed') m = 'Нет связи с Firebase';
+    else m = e.message;
+    alert(m);
+  }
+}
+
+/* ============================================================
+   ОФЛАЙН + НАПОМИНАНИЕ + SW
+   ============================================================ */
+function setupOfflineBanner() {
+  const b = $('offlineBanner');
+  if (!b) return;
+  const upd = () => { if (navigator.onLine) b.classList.remove('visible'); else b.classList.add('visible'); };
+  window.addEventListener('online', upd);
+  window.addEventListener('offline', upd);
+  upd();
+}
+function checkUpcoming() {
+  const now = new Date();
+  const di = now.getDay() === 0 ? 6 : now.getDay() - 1;
+  if (!scheduleData[appState.selectedGroup]) return;
+  const ls = (scheduleData[appState.selectedGroup].schedule[di][getWeekType()] || []).filter(applyPeriodFilter);
+  let up = null;
+  for (const l of ls) {
+    const [h, m] = l.time.split('-')[0].trim().split(':').map(Number);
+    const d = new Date(now);
+    d.setHours(h, m, 0, 0);
+    if (d > now && (!up || d < up.d)) up = { d, l };
+  }
+  if (up) {
+    const diff = Math.round((up.d - now) / 60000);
+    if (diff > 0 && diff <= 30) {
+      const n = $('lessonNotification');
+      n.textContent = `Через ${diff} мин: ${up.l.subject}, ауд. ${up.l.room || '—'}`;
+      n.classList.add('show');
+      setTimeout(() => n.classList.remove('show'), 10000);
+    }
+  }
+}
+function registerServiceWorker() {
+  if (!('serviceWorker' in navigator)) return;
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('service-worker.js').catch(err => console.warn('SW:', err));
+  });
+}
+
+window.addEventListener('scroll', () => {
+  const h = $('appHeader');
+  if (window.scrollY > 50) h.classList.add('scrolled'); else h.classList.remove('scrolled');
+}, { passive: true });
+
+/* ============================================================
+   ИНИЦИАЛИЗАЦИЯ
+   ============================================================ */
+function init() {
+  const visits = parseInt(localStorage.getItem(visitsKey) || '0') + 1;
+  localStorage.setItem(visitsKey, visits);
+  if (visits === 1) unlockAchievement('first_visit');
+  if (visits >= 30) unlockAchievement('schedule_master');
+
+  const hour = new Date().getHours();
+  if (hour >= 0 && hour < 5) unlockAchievement('night_owl');
+  if (hour >= 5 && hour < 7) unlockAchievement('early_bird');
+
+  const today = new Date();
+  if (today.getDay() === 6) unlockAchievement('weekend_warrior');
+  const month = today.getMonth();
+  if (month === 0 || month === 5) unlockAchievement('exam_survivor');
+
+  const todayStr = today.toDateString();
+  const lastVisit = localStorage.getItem('pti_last_visit');
+  const streak = parseInt(localStorage.getItem('pti_streak') || '0');
+  if (lastVisit !== todayStr) {
+    const yesterdayStr = new Date(Date.now() - 86400000).toDateString();
+    const newStreak = lastVisit === yesterdayStr ? streak + 1 : 1;
+    localStorage.setItem('pti_streak', newStreak);
+    localStorage.setItem('pti_last_visit', todayStr);
+    if (newStreak >= 7) unlockAchievement('returning');
+    if (newStreak >= 30) unlockAchievement('loyal');
+  }
+
+  if (scheduleData[appState.selectedGroup]) {
+    const di = today.getDay() === 0 ? 6 : today.getDay() - 1;
+    const wt = getWeekType();
+    const tl = (scheduleData[appState.selectedGroup].schedule[di] ? scheduleData[appState.selectedGroup].schedule[di][wt] : []).filter(applyPeriodFilter);
+    if (tl.length === 0) unlockAchievement('no_pairs');
+    if (tl.some(l => l.isReplacement)) unlockAchievement('replacement_spotter');
+  }
+
+  const mStart = Date.now();
+  setInterval(() => { if (Date.now() - mStart > 30 * 60 * 1000) unlockAchievement('marathon'); }, 60000);
+
+  const sc = localStorage.getItem(courseKey);
+  if (sc) $('courseSelect').value = sc;
+  const sg = localStorage.getItem(groupKey);
+  if (sg && scheduleData[sg]) appState.selectedGroup = sg;
+  if (localStorage.getItem(themeKey) === 'dark') document.body.classList.add('dark-theme');
+
+  populateGroupSelect();
+  updateSchedule();
+  setupQuiz();
+  updateThemeButton();
+  updateSoundButton();
+  updateNowTab();
+  updateStats();
+  renderAchievements();
+  initBirthdayForm();
+  renderNotificationsBlock();
+  setupOfflineBanner();
+  registerServiceWorker();
+  renderStudentLife();
+  checkUpcoming();
+  loadWeather();
+
+  setInterval(updateNowTab, 30000);
+  setInterval(checkUpcoming, 60000);
+  setInterval(renderUpcomingNotifications, 60000);
+
+  if (localStorage.getItem(NOTIF_ENABLED_KEY) === 'true' && Notification.permission === 'granted') {
+    startNotificationScheduler();
+  }
+
+  setTimeout(() => { syncRating(); loadRating(); }, 2000);
+
+  tabLinks.forEach(l => l.addEventListener('click', () => switchTab(l.dataset.tab)));
+
+  $('themeToggle').addEventListener('click', toggleTheme);
+  $('soundToggle').addEventListener('click', toggleSound);
+  document.addEventListener('touchstart', initAudio, { once: true, passive: true });
+  document.addEventListener('click', initAudio, { once: true });
+
+  $('prevWeekBtn').addEventListener('click', () => { appState.weekOffset--; updateSchedule(); });
+  $('nextWeekBtn').addEventListener('click', () => { appState.weekOffset++; updateSchedule(); });
+  $('todayBtn').addEventListener('click', () => { appState.weekOffset = 0; updateSchedule(); });
+  $('hideWeekendsCheckbox').addEventListener('change', () => { appState.hideWeekends = $('hideWeekendsCheckbox').checked; updateSchedule(); });
+  $('exportPngBtn').addEventListener('click', exportScheduleToPng);
+  $('exportIcalBtn').addEventListener('click', exportScheduleToIcal);
+  $('searchInput').addEventListener('input', () => {
+    appState.searchQuery = $('searchInput').value.toLowerCase();
+    if (appState.searchQuery.length >= 3 && incCounter('search_count') >= 5) unlockAchievement('search_master');
+    updateSchedule();
+  });
+  $('teacherFilter').addEventListener('change', () => { appState.selectedTeacher = $('teacherFilter').value; updateSchedule(); });
+
+  $('courseSelect').addEventListener('change', () => { localStorage.setItem(courseKey, $('courseSelect').value); populateGroupSelect(); });
+  $('groupSelect').addEventListener('change', () => { appState.selectedGroup = $('groupSelect').value; localStorage.setItem(groupKey, appState.selectedGroup); updateHeaderGroup(); updateTeacherFilter(); updateSchedule(); updateStats(); updateNowTab(); });
+
+  $('saveLessonEdit').addEventListener('click', saveLessonEdit);
+  $('cancelLessonEdit').addEventListener('click', () => $('lessonEditModal').classList.remove('active'));
+  $('addToGCalBtn').addEventListener('click', addLessonToGoogleCalendar);
+  window.addEventListener('click', e => { if (e.target === $('lessonEditModal')) $('lessonEditModal').classList.remove('active'); });
+
+  $('weatherWidget').addEventListener('click', openWeatherModal);
+  $('weatherModalClose').addEventListener('click', () => $('weatherModal').classList.remove('active'));
+  $('weatherModal').addEventListener('click', e => { if (e.target === $('weatherModal')) $('weatherModal').classList.remove('active'); });
+
+  $('adminToggleLink').addEventListener('click', toggleAdminPanel);
+  $('adminLoginBtn').addEventListener('click', tryAdminLogin);
+  $('adminPassword').addEventListener('keypress', e => { if (e.key === 'Enter') tryAdminLogin(); });
+  $('addNoticeBtn').addEventListener('click', addNoticeToFirestore);
+  $('noticeList').addEventListener('click', e => {
+    const b = e.target.closest('.notice-delete');
+    if (!b) return;
+    const c = e.target.closest('.notice-card');
+    if (c) deleteNotice(c.dataset.id);
+  });
+
+  $('sendChatBtn').addEventListener('click', handleSendChat);
+  $('chatInput').addEventListener('keypress', e => { if (e.key === 'Enter') handleSendChat(); });
+
+  $('sendFeedbackBtn').addEventListener('click', sendFeedback);
+  $('feedbackInput').addEventListener('keypress', e => { if (e.key === 'Enter') sendFeedback(); });
+
+  $('copyUrlBtn').addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText('https://pti-novsu.ru');
+      $('copyUrlBtn').textContent = '✅ Скопировано!';
+      setTimeout(() => $('copyUrlBtn').textContent = '📋 Скопировать', 2000);
+    } catch(e) { alert('https://pti-novsu.ru'); }
+  });
+
+  initVoice();
+  setTimeout(initYandexMap, 500);
+  setTimeout(() => $('preloader').classList.add('hidden'), 800);
+}
+
+window.addEventListener('firebase-ready', () => {
+  appState.firebaseReady = true;
+  initNotices();
+  loadScheduleFromCloud();
+});
+window.addEventListener('load', () => setTimeout(init, 600));
+</script>
+</body>
+</html>
