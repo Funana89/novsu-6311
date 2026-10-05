@@ -1305,7 +1305,7 @@ function switchTab(tab) {
   visited.add(tab);
   sessionStorage.setItem('pti_tabs_today', JSON.stringify([...visited]));
   if (visited.size >= 5) unlockAchievement('explorer');
-  if (tab === 'map') { unlockAchievement('map_user'); setTimeout(initYandexMap, 100); }
+  if (tab === 'map') { unlockAchievement('map_user'); /*setTimeout(initYandexMap, 100);*/ } // Это не нужно, у нас уже карта есть с init
   if (tab === 'now') { updateNowTab(); updateStats(); }
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
@@ -1595,12 +1595,26 @@ window.saveQuizResult = saveQuizResult;
 function initYandexMap() {
   if (typeof ymaps === 'undefined') return;
   ymaps.ready(() => {
-    const map = new ymaps.Map('yandexMap', { center: [58.521, 31.271], zoom: 13, controls: ['zoomControl', 'fullscreenControl'] });
+    document.getElementById('yandexMap').innerHTML = '<div></div>';  // Если готово, то загрузилось, убираем "Загрузка". Если что, карта остаётся на всю сессию
+    const map = new ymaps.Map('yandexMap', { center: [58.541979, 31.261317], zoom: 13, controls: ['zoomControl', 'fullscreenControl'] });
     [
-      { c: [58.521, 31.271], n: '🏛 Главный корпус ПТИ', a: 'ул. Б. Санкт-Петербургская, 41' },
-      { c: [58.522, 31.272], n: '🔬 Учебно-лабораторный', a: 'ул. Б. Санкт-Петербургская, 46' }
+      { c: [58.541979, 31.261317], n: '🏛 Главный корпус ПТИ', a: 'ул. Б. Санкт-Петербургская, 41' },
+      { c: [58.541216, 31.288184], n: '🏛 ИГУМ Атоново', a: 'Антоново, 1' },
+      { c: [58.551745, 31.300628], n: '🏛 ХимТех интститут', a: 'ул. Советской Армии, 7' },
+      { c: [58.522298, 31.258434], n: '🏛 Пед институт', a: 'ул. Псковская, 3' },
+      { c: [58.542987, 31.310635], n: '🏛 Мед институт', a: 'ул. Державина, 6' },
+      { c: [58.541715, 31.264525], n: '🏛 Корпус ПТК', a: 'ул. Б. Санкт-Петербургская, 46' }
     ].forEach(b => map.geoObjects.add(new ymaps.Placemark(b.c, { balloonContentHeader: b.n, balloonContentBody: b.a }, { preset: 'islands#blueIcon' })));
-    map.geoObjects.add(new ymaps.Placemark([58.525, 31.280], { balloonContentHeader: '🏠 Общежитие', balloonContentBody: 'ул. Студенческая, 5' }, { preset: 'islands#yellowIcon' }));
+    [
+      { c: [58.538253, 31.258048], n: '🏠 Общежитие №1', a: 'ул. Саши Устинова, 9' },
+      { c: [58.540916, 31.293002], n: '🏠 Общежитие №2', a: 'ул. Парковая, 7' },
+      { c: [58.541475, 31.292274], n: '🏠 Общежитие №3', a: 'ул. Парковая, 9' },
+      { c: [58.540104, 31.253161], n: '🏠 Общежитие №4', a: 'ул. Менделеева, 3Б' },
+      { c: [58.547158, 31.231961], n: '🏠 Общежитие №5', a: 'пр. А. Корсунова, 36к3' },
+      { c: [58.541912, 31.294565], n: '🏠 Общежитие №6', a: 'ул. Парковая, 10' },
+      { c: [58.541330, 31.240738], n: '🏠 Общежитие №7', a: 'ул. Свободы, 4' },
+      { c: [58.552628, 31.302955], n: '🏠 Общежитие №8', a: 'ул. Советской Армии, 9' }
+    ].forEach(b => map.geoObjects.add(new ymaps.Placemark(b.c, { balloonContentHeader: b.n, balloonContentBody: b.a }, { preset: 'islands#yellowIcon' })));
   });
 }
 
