@@ -1601,7 +1601,6 @@ window.saveQuizResult = saveQuizResult;
 function initYandexMap() {
   if (typeof ymaps === 'undefined') return;
   ymaps.ready(() => {
-    document.getElementById('yandexMap').innerHTML = '<div></div>';  // Если готово, то загрузилось, убираем "Загрузка". Если что, карта остаётся на всю сессию
     const map = new ymaps.Map('yandexMap', { center: [58.541979, 31.261317], zoom: 13, controls: ['zoomControl', 'fullscreenControl'] });
     [
       { c: [58.541979, 31.261317], n: '🏛 Главный корпус ПТИ', a: 'ул. Б. Санкт-Петербургская, 41' },
@@ -1622,6 +1621,7 @@ function initYandexMap() {
       { c: [58.541330, 31.240738], n: '🏠 Общежитие №7', a: 'ул. Свободы, 4' },
       { c: [58.552628, 31.302955], n: '🏠 Общежитие №8', a: 'ул. Советской Армии, 9' }
     ].forEach(b => map.geoObjects.add(new ymaps.Placemark(b.c, { balloonContentHeader: b.n, balloonContentBody: b.a }, { preset: 'islands#yellowIcon' })));
+    document.getElementById('yandexMap').innerHTML = '<div></div>';  // Если готово, то загрузилось, убираем "Загрузка". Если что, карта остаётся на всю сессию
   });
 }
 
